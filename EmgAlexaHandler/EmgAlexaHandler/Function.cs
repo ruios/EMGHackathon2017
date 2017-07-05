@@ -1,9 +1,11 @@
+using System.Collections.Generic;
 using System.Linq;
 using Amazon.Lambda.Core;
 using Alexa.NET.Request;
 using Alexa.NET.Response;
 using Alexa.NET.Request.Type;
 using EmgAlexaHandler.Intents;
+using Newtonsoft.Json;
 
 // Assembly attribute to enable the Lambda function's JSON input to be converted into a .NET class.
 [assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.Json.JsonSerializer))]
@@ -12,7 +14,14 @@ namespace EmgAlexaHandler
 {
     public class Function
     {
-        private readonly IIntentHandler[] _intentHandlers = new IIntentHandler[0];
+        private readonly IIntentHandler[] _intentHandlers = new IIntentHandler[]
+            {
+                new GetMoreInfoAboutEducationHandler(),
+                new SearchIntentHandler(),
+                new StartInformationRequestHandler(), 
+                new GetEmailForInformationRequestHandler(), 
+                new GetNameForInformationRequestHandler(), 
+            };
         /// <summary>
         /// A simple function that takes a string and does a ToUpper
         /// </summary>
@@ -24,10 +33,13 @@ namespace EmgAlexaHandler
             var log = context.Logger;
             log.LogLine($"Starting to handle the request...");
 
+            log.LogLine(JsonConvert.SerializeObject(input));
+
             var response = new SkillResponse();
             response.Response = new ResponseBody();
             response.Response.ShouldEndSession = false;
             IOutputSpeech innerResponse = null;
+            Dictionary<string, object> sessionAttributes = new Dictionary<string, object>();
 
             // check what type of a request it is like an IntentRequest or a LaunchRequest
             var requestType = input.GetRequestType();
@@ -37,12 +49,14 @@ namespace EmgAlexaHandler
                 var intentRequest = (IntentRequest)input.Request;
 
                 log.LogLine($"Starting to handle the intent: {intentRequest.Intent.Name}");
-
+                
                 var intent = _intentHandlers.FirstOrDefault(i => i.CanHandle(intentRequest.Intent.Name));
 
                 if (intent != null)
                 {
-                    innerResponse = intent.GetResponse(intentRequest);
+                    var resp = intent.GetResponse(intentRequest, input.Session);
+                    innerResponse = resp.Response;
+                    sessionAttributes = resp.ResponseSessionAttributes;
                 }
                 else
                 {
@@ -51,7 +65,7 @@ namespace EmgAlexaHandler
             }
             else if (requestType == typeof(LaunchRequest))
             {
-                var responseText = $"Hi, I am EMG bot. What can I help you?";
+                var responseText = $"Welcome to education search leader EMG! What would you like to search for?";
 
                 innerResponse = new PlainTextOutputSpeech();
                 (innerResponse as PlainTextOutputSpeech).Text = responseText;
@@ -62,9 +76,14 @@ namespace EmgAlexaHandler
             }
 
             log.LogLine($"Starting to return the response...");
-
+            
+            response.SessionAttributes = sessionAttributes;
+            
             response.Response.OutputSpeech = innerResponse;
             response.Version = "1.0";
+
+            log.Log(JsonConvert.SerializeObject(response));
+
             return response;
         }
     }

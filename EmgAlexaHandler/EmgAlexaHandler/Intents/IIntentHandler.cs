@@ -1,4 +1,6 @@
-﻿using Alexa.NET.Request.Type;
+﻿using System.Collections.Generic;
+using Alexa.NET.Request;
+using Alexa.NET.Request.Type;
 using Alexa.NET.Response;
 
 namespace EmgAlexaHandler.Intents
@@ -6,6 +8,12 @@ namespace EmgAlexaHandler.Intents
     public interface IIntentHandler
     {
         bool CanHandle(string name);
-        IOutputSpeech GetResponse(IntentRequest intentRequest);
+        HandlerResult GetResponse(IntentRequest intentRequest, Session session);
+    }
+
+    public class HandlerResult
+    {
+        public IOutputSpeech Response { get; set; }
+        public Dictionary<string, object> ResponseSessionAttributes { get; set; }
     }
 }

@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using Alexa.NET.Request;
 using Alexa.NET.Request.Type;
 using Alexa.NET.Response;
 
@@ -10,7 +12,7 @@ namespace EmgAlexaHandler.Intents
             return name == "SearchIntent";
         }
 
-        public IOutputSpeech GetResponse(IntentRequest intentRequest)
+        public HandlerResult GetResponse(IntentRequest intentRequest, Session session)
         {
             var education = intentRequest.Intent.Slots["Education"].Value;
             var city = intentRequest.Intent.Slots["City"].Value;
@@ -24,7 +26,8 @@ namespace EmgAlexaHandler.Intents
                 Text = responseText
             };
 
-            return innerResponse;
+            
+            return new HandlerResult(){Response = innerResponse, ResponseSessionAttributes = new Dictionary<string, object>()};
         }
     }
 }
