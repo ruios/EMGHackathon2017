@@ -23,7 +23,7 @@ namespace EmgAlexaHandler.Intents
 
             //log.LogLine($"All slots: {string.Join(",", intentRequest.Intent.Slots)}");
 
-            var responseText = $"You are searching for {education} course in {city}, right?";
+            var responseText = $"You are searching for {education} course in {city}";
 
             var innerResponse = new PlainTextOutputSpeech
             {

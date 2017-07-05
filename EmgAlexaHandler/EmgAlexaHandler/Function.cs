@@ -7,6 +7,7 @@ using Amazon.Lambda.Core;
 using Alexa.NET.Request;
 using Alexa.NET.Response;
 using Alexa.NET.Request.Type;
+using EmgAlexaHandler.Intents;
 
 // Assembly attribute to enable the Lambda function's JSON input to be converted into a .NET class.
 [assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.Json.JsonSerializer))]
@@ -15,7 +16,7 @@ namespace EmgAlexaHandler
 {
     public class Function
     {
-        
+        private readonly IIntentResponder[] _intentResponders = new IIntentResponder[0];
         /// <summary>
         /// A simple function that takes a string and does a ToUpper
         /// </summary>
@@ -41,21 +42,15 @@ namespace EmgAlexaHandler
 
                 log.LogLine($"Starting to handle the intent: {intentRequest.Intent.Name}");
 
-                switch (intentRequest.Intent.Name)
+                var intent = _intentResponders.FirstOrDefault(i => i.CanRespond(intentRequest.Intent.Name));
+
+                if (intent != null)
                 {
-                    default:
-                        var education = intentRequest.Intent.Slots["Education"].Value;
-                        var city = intentRequest.Intent.Slots["City"].Value;
-
-                        log.LogLine($"All slots: {string.Join("," , intentRequest.Intent.Slots)}");
-
-
-                        var responseText = $"You are searching for {education} course in {city}";
-
-                        innerResponse = new PlainTextOutputSpeech();
-                        (innerResponse as PlainTextOutputSpeech).Text = responseText;
-
-                        break;
+                    innerResponse = intent.GetResponse(intentRequest);
+                }
+                else
+                {
+                    //Default
                 }
             }
             else if (requestType == typeof(LaunchRequest))
