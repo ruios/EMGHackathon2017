@@ -11,12 +11,12 @@ namespace EmgAlexaHandler.Intents
     {
         public bool CanHandle(string name)
         {
-            return name == "SearchIntent";
+            return name == "SearchEducation";
         }
 
         public HandlerResult GetResponse(IntentRequest intentRequest, Session session)
         {
-            string keyword = intentRequest.Intent.Slots["Keyword"].Value;
+            var keyword = intentRequest.Intent.Slots["Education"].Value;
 
             var client = new SearchClient();
             var result = client.Search(keyword);
@@ -30,15 +30,19 @@ namespace EmgAlexaHandler.Intents
                     }
                 };
 
-            var responseText = $"We found some results. Here are the top three: {string.Join(", ", result.Select(i => i.Name))}. Are you happy with these results, or do you want to do a new search??";
+
+            var selectedResult = string.Join(", ", result.Select(i => $"{i.Name} from {i.Institutes.First().Name}"));
+            var responseText = $"We found {result.Count} results. Here are the top three: {selectedResult}. Are you happy with these results, or do you want to do a new search??";
 
             var innerResponse = new PlainTextOutputSpeech
             {
                 Text = responseText
             };
 
-            
-            return new HandlerResult(){Response = innerResponse, ResponseSessionAttributes = new Dictionary<string, object>()};
+            return new HandlerResult()
+            {
+                Response = innerResponse, ResponseSessionAttributes = new Dictionary<string, object>()
+            };
         }
     }
 }

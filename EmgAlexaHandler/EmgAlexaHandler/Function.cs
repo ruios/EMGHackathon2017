@@ -22,6 +22,7 @@ namespace EmgAlexaHandler
                 new GetEmailForInformationRequestHandler(), 
                 new GetNameForInformationRequestHandler(), 
             };
+
         /// <summary>
         /// A simple function that takes a string and does a ToUpper
         /// </summary>
@@ -39,7 +40,8 @@ namespace EmgAlexaHandler
             response.Response = new ResponseBody();
             response.Response.ShouldEndSession = false;
             IOutputSpeech innerResponse = null;
-            Dictionary<string, object> sessionAttributes = new Dictionary<string, object>();
+
+            var sessionAttributes = new Dictionary<string, object>();
 
             // check what type of a request it is like an IntentRequest or a LaunchRequest
             var requestType = input.GetRequestType();
