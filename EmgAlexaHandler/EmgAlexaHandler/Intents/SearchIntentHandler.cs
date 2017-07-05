@@ -1,7 +1,9 @@
 using System.Collections.Generic;
+using System.Linq;
 using Alexa.NET.Request;
 using Alexa.NET.Request.Type;
 using Alexa.NET.Response;
+using EmgAlexaHandler.Search;
 
 namespace EmgAlexaHandler.Intents
 {
@@ -14,12 +16,21 @@ namespace EmgAlexaHandler.Intents
 
         public HandlerResult GetResponse(IntentRequest intentRequest, Session session)
         {
-            var education = intentRequest.Intent.Slots["Education"].Value;
-            var city = intentRequest.Intent.Slots["City"].Value;
+            string keyword = intentRequest.Intent.Slots["Keyword"].Value;
 
-            //log.LogLine($"All slots: {string.Join(",", intentRequest.Intent.Slots)}");
+            var client = new SearchClient();
+            var result = client.Search(keyword);
 
-            var responseText = $"You are searching for {education} course in {city}";
+            if (!result.Any())
+                return new HandlerResult()
+                {
+                    Response = new PlainTextOutputSpeech
+                    {
+                        Text = "Your search word sucked. Try again."
+                    }
+                };
+
+            var responseText = $"We found some results. Here are the top three: {string.Join(", ", result.Select(i => i.Name))}. Are you happy with these results, or do you want to do a new search??";
 
             var innerResponse = new PlainTextOutputSpeech
             {

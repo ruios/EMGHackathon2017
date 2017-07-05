@@ -61,6 +61,7 @@ namespace EmgAlexaHandler
                 else
                 {
                     //Default
+                    log.LogLine("Intent not found");
                 }
             }
             else if (requestType == typeof(LaunchRequest))
