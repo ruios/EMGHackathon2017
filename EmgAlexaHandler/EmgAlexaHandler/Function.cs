@@ -50,7 +50,7 @@ namespace EmgAlexaHandler
                         log.LogLine($"All slots: {string.Join("," , intentRequest.Intent.Slots)}");
 
 
-                        var responseText = $"You are searching for {education} course in {city}, right?";
+                        var responseText = $"You are searching for {education} course in {city}";
 
                         innerResponse = new PlainTextOutputSpeech();
                         (innerResponse as PlainTextOutputSpeech).Text = responseText;
@@ -60,7 +60,10 @@ namespace EmgAlexaHandler
             }
             else if (requestType == typeof(LaunchRequest))
             {
-                // default launch path executed
+                var responseText = $"Hi, I am EMG bot. What can I help you?";
+
+                innerResponse = new PlainTextOutputSpeech();
+                (innerResponse as PlainTextOutputSpeech).Text = responseText;
             }
             else if (requestType == typeof(AudioPlayerRequest))
             {
