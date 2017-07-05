@@ -1,8 +1,4 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-
 using Amazon.Lambda.Core;
 using Alexa.NET.Request;
 using Alexa.NET.Response;
@@ -16,7 +12,7 @@ namespace EmgAlexaHandler
 {
     public class Function
     {
-        private readonly IIntentResponder[] _intentResponders = new IIntentResponder[0];
+        private readonly IIntentHandler[] _intentHandlers = new IIntentHandler[0];
         /// <summary>
         /// A simple function that takes a string and does a ToUpper
         /// </summary>
@@ -42,7 +38,7 @@ namespace EmgAlexaHandler
 
                 log.LogLine($"Starting to handle the intent: {intentRequest.Intent.Name}");
 
-                var intent = _intentResponders.FirstOrDefault(i => i.CanRespond(intentRequest.Intent.Name));
+                var intent = _intentHandlers.FirstOrDefault(i => i.CanHandle(intentRequest.Intent.Name));
 
                 if (intent != null)
                 {

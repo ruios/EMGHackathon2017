@@ -1,17 +1,11 @@
-﻿using Alexa.NET.Request.Type;
+using Alexa.NET.Request.Type;
 using Alexa.NET.Response;
 
 namespace EmgAlexaHandler.Intents
 {
-    public interface IIntentResponder
+    public class SearchIntentHandler : IIntentHandler
     {
-        bool CanRespond(string name);
-        IOutputSpeech GetResponse(IntentRequest intentRequest);
-    }
-
-    public class SearchIntentResponder : IIntentResponder
-    {
-        public bool CanRespond(string name)
+        public bool CanHandle(string name)
         {
             return name == "SearchIntent";
         }
