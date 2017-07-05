@@ -12,7 +12,10 @@ namespace EmgAlexaHandler
 {
     public class Function
     {
-        private readonly IIntentHandler[] _intentHandlers = new IIntentHandler[0];
+        private readonly IIntentHandler[] _intentHandlers = new IIntentHandler[]
+        {
+            new SearchIntentHandler()
+        };
         /// <summary>
         /// A simple function that takes a string and does a ToUpper
         /// </summary>
@@ -47,6 +50,7 @@ namespace EmgAlexaHandler
                 else
                 {
                     //Default
+                    log.LogLine("Intent not found");
                 }
             }
             else if (requestType == typeof(LaunchRequest))
@@ -55,10 +59,6 @@ namespace EmgAlexaHandler
 
                 innerResponse = new PlainTextOutputSpeech();
                 (innerResponse as PlainTextOutputSpeech).Text = responseText;
-            }
-            else if (requestType == typeof(AudioPlayerRequest))
-            {
-                // do some audio response stuff
             }
 
             log.LogLine($"Starting to return the response...");
