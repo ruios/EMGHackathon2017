@@ -78,23 +78,26 @@ namespace EmgAlexaHandler.Intents
         {
             var facts = new List<string>();
 
-            var review = education.Fields.ReviewCount.HasValue
+            var review = education.Fields?.ReviewCount != null
                 ? $"This education has {education.Fields.ReviewCount} reviews, with an average of {education.Fields.ReviewAverage}. {(education.Fields.ReviewAverage > 3 ? "That's pretty good" : "" )}"
                 : $"This education doesn't have any reviews yet";
             facts.Add(review);
 
-            var category = $"The categories are {string.Join(", ", education.Categories.Select(c => c.Name))}. That sounds interesting.";
-            facts.Add(category);
-
-            if (education.Events.Any())
+            if (education.Categories != null && education.Categories.Any())
             {
-                var locations = education.Events.Select(e => e.Location.Name).Distinct().ToArray();
+                var category = $"The categories are {string.Join(", ", education.Categories.Select(c => c.Name))}. That sounds interesting.";
+                facts.Add(category);
+            }
+
+            if (education.Events != null && education.Events.Any())
+            {
+                var locations = education.Events.Where(e => e.Location != null).Select(e => e.Location.Name).Distinct().ToArray();
                 var location = locations.Count() >= 3
                     ? $"The education has events in a lot of places, here are some: {string.Join(", ", locations.Take(3))}"
                     : $"The education has events in {string.Join(", ", locations)}";
                 facts.Add(location);
 
-                var nextEvent = education.Events.Where(e => e.Start.StartDate.HasValue).OrderByDescending(e => e.Start.StartDate).FirstOrDefault();
+                var nextEvent = education.Events.Where(e => e.Start != null && e.Start.StartDate.HasValue).OrderByDescending(e => e.Start.StartDate).FirstOrDefault();
                 var @event = nextEvent != null ? $"The next event will take place on {nextEvent.Start.StartDate:D}, in {nextEvent.Location.Name}" : $"This education doesn't have any events.";
                 facts.Add(@event);
             }

@@ -26,7 +26,7 @@ namespace EmgAlexaHandler.Intents
                 }
             };
 
-            if (session.Attributes["EducationList"] == null)
+            if (!session.Attributes.ContainsKey("EducationList"))
             {
                 return errorResponse;
             }

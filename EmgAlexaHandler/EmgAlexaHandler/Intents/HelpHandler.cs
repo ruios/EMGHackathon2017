@@ -19,7 +19,7 @@ namespace EmgAlexaHandler.Intents
 
         public HandlerResult GetResponse(IntentRequest intentRequest, Session session)
         {
-            if (session.Attributes["Previous"] == null)
+            if (!session.Attributes.ContainsKey("Previous"))
             {
                 // DEFAULT HELP!!
             }

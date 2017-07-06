@@ -35,7 +35,7 @@ namespace EmgAlexaHandler.Intents
                 Text = responseText
             };
       
-            if (session.Attributes["Email"] == null)
+            if (!session.Attributes.ContainsKey("Email"))
             {
                 responseText = $"I'm sorry, but I seem to have dropped your email address somewhere. Please state it again.";
 
