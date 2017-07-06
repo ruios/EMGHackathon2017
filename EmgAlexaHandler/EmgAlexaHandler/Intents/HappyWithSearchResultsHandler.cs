@@ -37,7 +37,7 @@ namespace EmgAlexaHandler.Intents
                 var educationList = jArray.ToObject<List<Education>>();
 
                 var selectedResult = string.Join(". . . ", educationList.Select(i => $"{i.Name}"));
-                var responseText = $"Which education would you like to know more about?";
+                var responseText = $"Which education would you like to know more about? The first, the second or the third?";
 
                 var innerResponse = new PlainTextOutputSpeech
                 {

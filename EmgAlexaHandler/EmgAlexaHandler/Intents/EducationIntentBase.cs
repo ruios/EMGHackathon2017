@@ -26,7 +26,7 @@ namespace EmgAlexaHandler.Intents
                     "You search returned nothing. Zilch. Try again.",
                     "What? No. Try again, and don't slur this time around.",
                     "Human, are you drunk? No.",
-                    "I'm sorry, human. You were completely incomprehensible.",
+                    "I'm sorry. You were completely incomprehensible.",
                     "What on earth was that? Try it again.",
                     "Sorry, I wasn't listening. Try again.",
                     "Huh? Oh, you're still here. How nice. Could you repeat that?",
@@ -61,7 +61,7 @@ namespace EmgAlexaHandler.Intents
             {
                 Response = new PlainTextOutputSpeech
                 {
-                    Text = "Oops, something goes wrong. let's pick anonther education."
+                    Text = "Oops, something went wrong. let's pick anonther education."
                 }
             };
         }

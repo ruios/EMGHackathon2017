@@ -59,7 +59,7 @@ namespace EmgAlexaHandler.Intents
                 {
                     var selectedResult = string.Join(". . . ", educationList.Select(i => $"{i.Name}"));
 
-                    var errorResponseText = $"Select one of the educations in the list. First, second or third?";
+                    var errorResponseText = $"Choose one of the educations in the list. The first, the second or the third?";
 
                     var errorResponse2 = new PlainTextOutputSpeech
                     {
