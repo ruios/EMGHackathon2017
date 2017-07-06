@@ -18,6 +18,7 @@ namespace EmgAlexaHandler.Intents
         public HandlerResult GetResponse(IntentRequest intentRequest, Session session)
         {
             var keyword = intentRequest.Intent.Slots["Education"].Value;
+            var city = intentRequest.Intent.Slots["City"].Value;
 
             var client = new SearchClient();
             var result = client.Search(keyword);
