@@ -3,7 +3,6 @@ using System.Linq;
 using Alexa.NET.Request;
 using Alexa.NET.Request.Type;
 using Alexa.NET.Response;
-using Amazon.Lambda.Core;
 using EmgAlexaHandler.Search;
 
 namespace EmgAlexaHandler.Intents
@@ -33,7 +32,6 @@ namespace EmgAlexaHandler.Intents
                     }
                 };
             }
-
 
             var selectedResult = string.Join(", ", result.Items.Select(i => $"{i.Name} from {i.Institutes.First().Name}"));
             var responseText = $"We found {result.Total} results. Here are the top three: {selectedResult}. Are you happy with these results, or do you want to do a new search??";

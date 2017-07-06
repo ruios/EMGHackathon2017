@@ -18,6 +18,7 @@ namespace EmgAlexaHandler
             {
                 new GetMoreInfoAboutEducationHandler(),
                 new SearchIntentHandler(),
+                new SearchWithOnlyEducationHandler(), 
                 new StartInformationRequestHandler(), 
                 new GetEmailForInformationRequestHandler(), 
                 new GetNameForInformationRequestHandler(), 

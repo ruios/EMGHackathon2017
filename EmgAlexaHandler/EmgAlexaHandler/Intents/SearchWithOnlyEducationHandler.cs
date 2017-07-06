@@ -3,12 +3,11 @@ using System.Linq;
 using Alexa.NET.Request;
 using Alexa.NET.Request.Type;
 using Alexa.NET.Response;
-using Amazon.Lambda.Core;
 using EmgAlexaHandler.Search;
 
 namespace EmgAlexaHandler.Intents
 {
-    public class SearchWithOnlyEducationIntentHandler : IIntentHandler
+    public class SearchWithOnlyEducationHandler : IIntentHandler
     {
         public bool CanHandle(string name)
         {
@@ -22,7 +21,7 @@ namespace EmgAlexaHandler.Intents
             var client = new SearchClient();
             var result = client.Search(keyword);
 
-            if (!result.Any())
+            if (!result.Items.Any())
             {
                 return new HandlerResult()
                 {
@@ -33,9 +32,8 @@ namespace EmgAlexaHandler.Intents
                 };
             }
 
-
-            var selectedResult = string.Join(", ", result.Select(i => $"{i.Name} from {i.Institutes.First().Name}"));
-            var responseText = $"We found {result.Count} results. Here are the top three: {selectedResult}. Are you happy with these results, or do you want to do a new search??";
+            var selectedResult = string.Join(", ", result.Items.Select(i => $"{i.Name} from {i.Institutes.First().Name}"));
+            var responseText = $"We found {result.Total} results. Here are the top three: {selectedResult}. Are you happy with these results, or do you want to do a new search??";
             
             var innerResponse = new PlainTextOutputSpeech
             {
@@ -44,7 +42,7 @@ namespace EmgAlexaHandler.Intents
 
             var attr = new Dictionary<string, object>()
             {
-                { "EducationList", result.ToArray()}
+                { "EducationList", result.Items.ToArray()}
             };
 
             return new HandlerResult()
