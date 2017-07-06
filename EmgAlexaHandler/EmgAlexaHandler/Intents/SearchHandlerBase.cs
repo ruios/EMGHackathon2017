@@ -24,7 +24,7 @@ namespace EmgAlexaHandler.Intents
                     "I am sorry, but no. Enter a search word. This time, please pronounce it correctly.",
                     "You search returned nothing. Zilch. Try again.",
                     "What? No. Try again, and please don't slur.",
-                    "Human, are you drunk? No.",
+                    "EMG would like to remind you that searching under the influence of alcohol is not recommended.",
                     "I'm sorry. You were completely incomprehensible.",
                     "What on earth was that? Try again.",
                     "I am so sorry, I wasn't listening. Try again.",
