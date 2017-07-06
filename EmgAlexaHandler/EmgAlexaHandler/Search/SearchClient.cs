@@ -11,7 +11,13 @@ namespace EmgAlexaHandler.Search
 {
     public interface ISearchClient
     {
-        IReadOnlyList<Education> Search(string q);
+        SearchResult Search(string q);
+    }
+
+    public class SearchResult
+    {
+        public long Total { get; set; }
+        public IReadOnlyList<Education> Items { get; set; }
     }
 
     public class SearchClient : ISearchClient
@@ -30,7 +36,7 @@ namespace EmgAlexaHandler.Search
             _client = new ElasticClient(settings);
         }
 
-        public IReadOnlyList<Education> Search(string q)
+        public SearchResult Search(string q)
         {
             LambdaLogger.Log($"Keyword: {q}");
 
@@ -43,7 +49,11 @@ namespace EmgAlexaHandler.Search
             //LambdaLogger.Log($"Query: {jsonQuery}");
 
             var response = _client.Search<Education>(request);
-            return response.Documents.ToList();
+            return new SearchResult
+            {
+                Total = response.Total,
+                Items = response.Documents.ToList()
+            };
         }
 
         private ISearchRequest CreateRequest(QueryContainer query)
