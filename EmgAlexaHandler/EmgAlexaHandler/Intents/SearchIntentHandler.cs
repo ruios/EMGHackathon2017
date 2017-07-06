@@ -34,6 +34,8 @@ namespace EmgAlexaHandler.Intents
             var selectedResult = string.Join(", ", result.Select(i => $"{i.Name} from {i.Institutes.First().Name}"));
             var responseText = $"We found {result.Count} results. Here are the top three: {selectedResult}. Are you happy with these results, or do you want to do a new search??";
 
+            // TODO - STORE RESULT IN SESSION
+
             var innerResponse = new PlainTextOutputSpeech
             {
                 Text = responseText
