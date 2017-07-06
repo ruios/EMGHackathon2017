@@ -39,15 +39,15 @@ namespace EmgAlexaHandler.Intents
                 var selectedResult = string.Join(", ", educationList.Select(i => $"{i.Name} from {i.Institutes.First().Name}"));
                 var responseText = $"Here are the three educations: {selectedResult}. Which one would you like to know more about?";
 
-            var attr = new Dictionary<string, object>()
-            {
-                { "EducationList", educationList},
-                {"Previous", IntentTypes.Intent.HappyWithSearchResults},
-            };
+                var innerResponse = new PlainTextOutputSpeech
+                {
+                    Text = responseText
+                };
 
                 var attr = new Dictionary<string, object>()
                 {
-                    { "EducationList", educationList}
+                    { "EducationList", educationList},
+                    {"Previous", IntentTypes.Intent.HappyWithSearchResults},
                 };
 
                 return new HandlerResult() { Response = innerResponse, ResponseSessionAttributes = attr};
