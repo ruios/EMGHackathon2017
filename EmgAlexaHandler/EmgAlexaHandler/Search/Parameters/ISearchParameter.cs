@@ -13,8 +13,7 @@ namespace EmgAlexaHandler.Search.Parameters
     {
         Must,
         MustNot,
-        Should,
-        Filter
+        Should
     }
 
     public class FreetextParameter : ISearchParamter
@@ -32,8 +31,8 @@ namespace EmgAlexaHandler.Search.Parameters
     public class PlaceParameter : ISearchParamter
     {
         public int Id { get; }
-        public QueryType QueryType => QueryType.Filter;
-        public QueryContainer Query => Query<Education>.Term(e => e.Field("events.Places.id").Value(Id));
+        public QueryType QueryType => QueryType.Must;
+        public QueryContainer Query => Query<Education>.Nested(n => n.Path("events").Query(q => q.Term(e => e.Field("events.places.id").Value(Id))));
 
         public PlaceParameter(int id)
         {

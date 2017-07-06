@@ -20,7 +20,7 @@ namespace EmgAlexaHandler.Intents
 
             var client = new SearchClient();
 
-            var placeId = client.GeKey(city, AttributeType.Place);
+            var placeId = client.GetKey(city, AttributeType.Place);
 
             var freetextParameter = new FreetextParameter(keyword);
             var placeParameter = new PlaceParameter(placeId);

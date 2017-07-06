@@ -12,7 +12,7 @@ namespace EmgAlexaHandler.Search
 {
     public interface ISearchClient
     {
-        int GeKey(string q, AttributeType type);
+        int GetKey(string q, AttributeType type);
         SearchResult Search(IReadOnlyList<ISearchParamter> parameters);
     }
 
@@ -38,18 +38,23 @@ namespace EmgAlexaHandler.Search
             _client = new ElasticClient(settings);
         }
 
-        public int GeKey(string q, AttributeType type)
+        public int GetKey(string q, AttributeType type)
         {
-
-            Query<AttributeNode>.Term(i => i.Field("search-name").Value(q));
-            var request = new SearchRequest("index-0132", "attribute")
+            var query = new BoolQuery
             {
-                Query = Query<AttributeNode>.Bool(b => b
-                    .Filter(f => f.Term(t => t.Field("type").Value(type)))
-                    .Must(m => m.Term(i => i.Field("search-name").Value(q)))),
+                Must = new[]
+                {
+                    Query<AttributeNode>.Term(i => i.Field("search-name").Value(q)),
+                    Query<AttributeNode>.Term(i => i.Field("type").Value(type)),
+                }
+            };
+
+            var request = new SearchRequest("index-0012", "attribute")
+            {
+                Query = query,
                 Source = new Union<bool, ISourceFilter>(new SourceFilter
                 {
-                    Includes = new []
+                    Includes = new[]
                     {
                         "id"
                     }
@@ -74,7 +79,6 @@ namespace EmgAlexaHandler.Search
 
         public SearchResult Search(IReadOnlyList<ISearchParamter> parameters)
         {
-            var filter = new List<QueryContainer>();
             var must = new List<QueryContainer>();
             var mustNot = new List<QueryContainer>();
             var should = new List<QueryContainer>();
@@ -83,9 +87,6 @@ namespace EmgAlexaHandler.Search
             {
                 switch (parameter.QueryType)
                 {
-                    case QueryType.Filter:
-                        filter.Add(parameter.Query);
-                        break;
                     case QueryType.Must:
                         must.Add(parameter.Query);
                         break;
@@ -102,8 +103,7 @@ namespace EmgAlexaHandler.Search
             {
                 Must = must,
                 MustNot = mustNot,
-                Should = should,
-                Filter = filter
+                Should = should
             };
 
             var request = CreateRequest(query);
@@ -123,7 +123,7 @@ namespace EmgAlexaHandler.Search
 
         private ISearchRequest CreateRequest(QueryContainer query)
         {
-            ISearchRequest request = new SearchRequest("index-0132", "education")
+            ISearchRequest request = new SearchRequest("index-0012", "education")
             {
                 Query = query,
                 Source = new Union<bool, ISourceFilter>(new SourceFilter
