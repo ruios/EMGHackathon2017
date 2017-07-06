@@ -5,13 +5,15 @@ using Amazon.Lambda.Core;
 using Elasticsearch.Net;
 using Elasticsearch.Net.Aws;
 using EmgAlexaHandler.Search.Documents;
+using EmgAlexaHandler.Search.Parameters;
 using Nest;
 
 namespace EmgAlexaHandler.Search
 {
     public interface ISearchClient
     {
-        SearchResult Search(string q);
+        int GeKey(string q, AttributeType type);
+        SearchResult Search(IReadOnlyList<ISearchParamter> parameters);
     }
 
     public class SearchResult
@@ -36,17 +38,80 @@ namespace EmgAlexaHandler.Search
             _client = new ElasticClient(settings);
         }
 
-        public SearchResult Search(string q)
+        public int GeKey(string q, AttributeType type)
         {
-            LambdaLogger.Log($"Keyword: {q}");
 
-            var query = Query<Education>.QueryString(e => e.Query(q).DefaultOperator(Operator.And));
+            Query<AttributeNode>.Term(i => i.Field("search-name").Value(q));
+            var request = new SearchRequest("index-0132", "attribute")
+            {
+                Query = Query<AttributeNode>.Bool(b => b
+                    .Filter(f => f.Term(t => t.Field("type").Value(type)))
+                    .Must(m => m.Term(i => i.Field("search-name").Value(q)))),
+                Source = new Union<bool, ISourceFilter>(new SourceFilter
+                {
+                    Includes = new []
+                    {
+                        "id"
+                    }
+                }),
+                Size = 1
+            };
+
+            var stream = new System.IO.MemoryStream();
+            _client.Serializer.Serialize(request, stream);
+            var jsonQuery = System.Text.Encoding.UTF8.GetString(stream.ToArray());
+            LambdaLogger.Log($"Query: {jsonQuery}");
+
+            var response = _client.Search<AttributeNode>(request);
+
+            var attribute = response.Documents.FirstOrDefault();
+
+            if (attribute == null)
+                return 0;
+
+            return attribute.Id;
+        }
+
+        public SearchResult Search(IReadOnlyList<ISearchParamter> parameters)
+        {
+            var filter = new List<QueryContainer>();
+            var must = new List<QueryContainer>();
+            var mustNot = new List<QueryContainer>();
+            var should = new List<QueryContainer>();
+
+            foreach (var parameter in parameters)
+            {
+                switch (parameter.QueryType)
+                {
+                    case QueryType.Filter:
+                        filter.Add(parameter.Query);
+                        break;
+                    case QueryType.Must:
+                        must.Add(parameter.Query);
+                        break;
+                    case QueryType.MustNot:
+                        mustNot.Add(parameter.Query);
+                        break;
+                    case QueryType.Should:
+                        should.Add(parameter.Query);
+                        break;
+                }
+            }
+
+            var query = new BoolQuery
+            {
+                Must = must,
+                MustNot = mustNot,
+                Should = should,
+                Filter = filter
+            };
+
             var request = CreateRequest(query);
 
-            //var stream = new System.IO.MemoryStream();
-            //_client.Serializer.Serialize(request, stream);
-            //var jsonQuery = System.Text.Encoding.UTF8.GetString(stream.ToArray());
-            //LambdaLogger.Log($"Query: {jsonQuery}");
+            var stream = new System.IO.MemoryStream();
+            _client.Serializer.Serialize(request, stream);
+            var jsonQuery = System.Text.Encoding.UTF8.GetString(stream.ToArray());
+            LambdaLogger.Log($"Query: {jsonQuery}");
 
             var response = _client.Search<Education>(request);
             return new SearchResult
@@ -63,7 +128,7 @@ namespace EmgAlexaHandler.Search
                 Query = query,
                 Source = new Union<bool, ISourceFilter>(new SourceFilter
                 {
-                    Includes = new string[]
+                    Includes = new []
                     {
                         "id",
                         "name",

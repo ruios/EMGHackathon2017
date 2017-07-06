@@ -1,55 +1,31 @@
 using System.Collections.Generic;
-using System.Linq;
-using Alexa.NET.Request;
 using Alexa.NET.Request.Type;
-using Alexa.NET.Response;
 using EmgAlexaHandler.Search;
+using EmgAlexaHandler.Search.Documents;
+using EmgAlexaHandler.Search.Parameters;
 
 namespace EmgAlexaHandler.Intents
 {
-    public class SearchIntentHandler : IIntentHandler
+    public class SearchIntentHandler : SearchHandlerBase
     {
-        public bool CanHandle(string name)
+        public override bool CanHandle(string name)
         {
             return name == "SearchEducation";
         }
 
-        public HandlerResult GetResponse(IntentRequest intentRequest, Session session)
+        public override SearchResult Search(IntentRequest intentRequest)
         {
             var keyword = intentRequest.Intent.Slots["Education"].Value;
             var city = intentRequest.Intent.Slots["City"].Value;
 
             var client = new SearchClient();
-            var result = client.Search(keyword);
 
-            if (!result.Items.Any())
-            {
-                return new HandlerResult()
-                {
-                    Response = new PlainTextOutputSpeech
-                    {
-                        Text = "Your search word sucked. Try again."
-                    }
-                };
-            }
+            var placeId = client.GeKey(city, AttributeType.Place);
 
-			var selectedResult = string.Join(". . . ", result.Items.Select(i => $"{i.Name}"));
-            var responseText = $"We found {result.Total} results. Here are the top three: {selectedResult}. Are you happy with these results, or do you want to do a new search??";
-            
-            var innerResponse = new PlainTextOutputSpeech
-            {
-                Text = responseText
-            };
+            var freetextParameter = new FreetextParameter(keyword);
+            var placeParameter = new PlaceParameter(placeId);
 
-            var attr = new Dictionary<string, object>()
-            {
-                { "EducationList", result.Items.ToArray()}
-            };
-
-            return new HandlerResult()
-            {
-                Response = innerResponse, ResponseSessionAttributes = attr
-            };
+            return client.Search(new List<ISearchParamter> { freetextParameter, placeParameter });
         }
     }
 }

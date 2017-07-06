@@ -1,54 +1,24 @@
-using System.Collections.Generic;
-using System.Linq;
-using Alexa.NET.Request;
 using Alexa.NET.Request.Type;
-using Alexa.NET.Response;
 using EmgAlexaHandler.Search;
+using EmgAlexaHandler.Search.Parameters;
 
 namespace EmgAlexaHandler.Intents
 {
-    public class SearchWithOnlyEducationHandler : IIntentHandler
+    public class SearchWithOnlyEducationHandler : SearchHandlerBase
     {
-        public bool CanHandle(string name)
+        public override bool CanHandle(string name)
         {
             return name == "SearchWithOnlyEducation";
         }
 
-        public HandlerResult GetResponse(IntentRequest intentRequest, Session session)
+        public override SearchResult Search(IntentRequest intentRequest)
         {
             var keyword = intentRequest.Intent.Slots["Education"].Value;
 
+            var parameter = new FreetextParameter(keyword);
+
             var client = new SearchClient();
-            var result = client.Search(keyword);
-
-            if (!result.Items.Any())
-            {
-                return new HandlerResult()
-                {
-                    Response = new PlainTextOutputSpeech
-                    {
-                        Text = "Your search word sucked. Try again."
-                    }
-                };
-            }
-
-            var selectedResult = string.Join(", ", result.Items.Select(i => $"{i.Name} from {i.Institutes.First().Name}"));
-            var responseText = $"We found {result.Total} results. Here are the top three: {selectedResult}. Are you happy with these results, or do you want to do a new search??";
-            
-            var innerResponse = new PlainTextOutputSpeech
-            {
-                Text = responseText
-            };
-
-            var attr = new Dictionary<string, object>()
-            {
-                { "EducationList", result.Items.ToArray()}
-            };
-
-            return new HandlerResult()
-            {
-                Response = innerResponse, ResponseSessionAttributes = attr
-            };
+            return client.Search(new[] { parameter });
         }
     }
 }
