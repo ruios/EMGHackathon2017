@@ -40,17 +40,17 @@ namespace EmgAlexaHandler.Intents
                 var selected = (string)intentRequest.Intent.Slots["EducationNumber"].Value.ToLower();
             
                 Education education = null;
-                if (selected.Contains("third") || selected.Contains("3") || selected.Contains("three"))
+                if (selected.Contains("third") || selected.Contains("3") || selected.Contains("three") || selected.Contains("3rd"))
                 {
                     education = educationList[2];
                 }
 
-                else if (selected.Contains("second") || selected.Contains("2") || selected.Contains("two"))
+                else if (selected.Contains("second") || selected.Contains("2") || selected.Contains("two") || selected.Contains("2nd"))
                 {
                     education = educationList[1];
                 }
 
-                else if (selected.Contains("first") || selected.Contains("1") || selected.Contains("one"))
+                else if (selected.Contains("first") || selected.Contains("1") || selected.Contains("one") || selected.Contains("1st"))
                 {
                     education = educationList[0];
                 }
@@ -73,8 +73,7 @@ namespace EmgAlexaHandler.Intents
                     return new HandlerResult { Response = errorResponse2, ResponseSessionAttributes = errorattr};
                 }
 
-            var responseText =
-                $"You selected {education.Name}. Do you want to make an information request or hear more about the education?";
+                var responseText = $"You selected {education.Name}. Do you want to make an information request or hear more about the education?";
             
                 var innerResponse = new PlainTextOutputSpeech
                 {
