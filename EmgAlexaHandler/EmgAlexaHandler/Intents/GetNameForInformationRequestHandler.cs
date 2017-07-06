@@ -80,12 +80,12 @@ namespace EmgAlexaHandler.Intents
 
         private async Task SendEmail(string email, string name, string educationName)
         {
-            var receiver = "elin.danielsson@studentum.se"; // FOR DEMO PURPOSE
+            var receiver = "elin.danielsson+alexa@studentum.se"; // FOR DEMO PURPOSE
 
             var subject = new Content("Information Request");
             var body = new Content($"Information request for {educationName}.<br/><br/>Email: {email}<br/>Name: {name}");
 
-            var sendRequest = new SendEmailRequest("", new Destination(new List<string> { receiver }), new Message(subject, new Body(body)));
+            var sendRequest = new SendEmailRequest("elin.danielsson+fromalexa@studentum.se", new Destination(new List<string> { receiver }), new Message(subject, new Body(body)));
 
             var ses = CreateEmailService();
 
