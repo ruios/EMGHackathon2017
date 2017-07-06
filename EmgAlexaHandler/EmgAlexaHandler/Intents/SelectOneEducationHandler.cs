@@ -62,30 +62,10 @@ namespace EmgAlexaHandler.Intents
                 {
                     var selectedResult = string.Join(". . . ", educationList.Select(i => $"{i.Name}"));
 
-                    var responseTextWrongSelection = "Which education would you like to choose? The first one, the second one or the third one?";
-
-                    if (educationList.Count == 2)
-                    {
-                        responseTextWrongSelection = "Which education would you like to choose? The first or the second one?";
-                    }
-                    else if (educationList.Count == 1)
-                    {
-                        responseTextWrongSelection = "Do you want to make an information request or hear more about the education?";
-
-                        var innerResponse1 = new PlainTextOutputSpeech
-                        {
-                            Text = responseTextWrongSelection
-                        };
-                    }
-
-                    var errorResponseWrongSelection = new PlainTextOutputSpeech
-                    {
-                        Text = responseTextWrongSelection
-                    };
-
+                    var errorResponseText = $"Choose one of the educations in the list: {selectedResult}. The first, the second or the third?";
                     var errorResponse2 = new PlainTextOutputSpeech
                     {
-                        Text = ErrorMessageHelper.GetErrorMessage()
+                        Text = errorResponseText
                     };
 
                     var errorattr = new Dictionary<string, object>()
@@ -93,7 +73,7 @@ namespace EmgAlexaHandler.Intents
                         { "EducationList", educationList}
                     };
 
-                    return new HandlerResult { Response = errorResponse2, ResponseSessionAttributes = errorattr};
+                    return new HandlerResult { Response = errorResponse2, ResponseSessionAttributes = errorattr };
                 }
 
                 var responseText = $"Congratulations, you managed to select {education.Name}. Do you want to make an information request or hear more about the education?";
