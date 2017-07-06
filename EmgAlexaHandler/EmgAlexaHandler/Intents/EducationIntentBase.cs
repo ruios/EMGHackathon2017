@@ -19,19 +19,9 @@ namespace EmgAlexaHandler.Intents
         {
             if (!session.Attributes.ContainsKey("Education"))
             {
-                var errorMessages = new List<string>
-                {
-                    "Something happened. Do not be anxious. Everything is alright.",
-                    "Nothing went wrong. Nothing at all. No need to worry.",
-                    "This application works great. Let's start over.",
-                    "There was a slight error. It was very small."
-                };
-
-                var responseText = errorMessages[new Random().Next(0, errorMessages.Count)];
-                
                 var innerResponse = new PlainTextOutputSpeech()
                 {
-                    Text = responseText
+                    Text = ErrorMessageHelper.GetErrorMessage()
                 };
 
                 return new HandlerResult() { Response = innerResponse };

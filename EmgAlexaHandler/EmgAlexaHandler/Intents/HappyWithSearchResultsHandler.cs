@@ -22,7 +22,7 @@ namespace EmgAlexaHandler.Intents
             {
                 Response = new PlainTextOutputSpeech
                 {
-                    Text = "Something weird happened. Let's try another search."
+                    Text = ErrorMessageHelper.GetErrorMessage()
                 }
             };
 
