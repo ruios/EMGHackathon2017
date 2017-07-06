@@ -14,10 +14,17 @@ namespace EmgAlexaHandler.Intents
 
         public HandlerResult GetResponse(IntentRequest intentRequest, Session session)
         {
+            string responseText;
+            var innerResponse = new PlainTextOutputSpeech();
+
             object education;
             if (session.Attributes["Education"] == null)
             {
-                // TODO - ERROR RESPONSE, WE HAVE NO EDUCATION
+                responseText = $"Yeah, no. Say a search word. Pronounce it correctly this time.";
+
+                innerResponse.Text = responseText;
+
+                return new HandlerResult() { Response = innerResponse };
             }
             education = session.Attributes["Education"]; // TODO - CAST TO TYPE
 
@@ -31,13 +38,10 @@ namespace EmgAlexaHandler.Intents
 
             // TODO - SEND EMAIL TO "INSTITUTE" (FOR DEMO)
 
-            var responseText = 
+            responseText = 
                 $"Thank you for the information. We are now sending your request to #institute#. They will contact you shorthly. Do you want to do another search?";
 
-            var innerResponse = new PlainTextOutputSpeech
-            {
-                Text = responseText
-            };
+           innerResponse.Text = responseText;
             
             return new HandlerResult() { Response = innerResponse };
         }

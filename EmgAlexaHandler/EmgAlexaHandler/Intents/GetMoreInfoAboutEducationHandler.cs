@@ -14,19 +14,25 @@ namespace EmgAlexaHandler.Intents
 
         public HandlerResult GetResponse(IntentRequest intentRequest, Session session)
         {
+            string responseText;
+            var innerResponse = new PlainTextOutputSpeech();
+
+
+
             object education;
             if (session.Attributes["Education"] == null)
             {
-                // TODO - ERROR RESPONSE, WE HAVE NO EDUCATION
+                responseText = $"Yeah, no. Try again, human. Search for something.";
+
+                innerResponse.Text = responseText;
+
+                return new HandlerResult() { Response = innerResponse };
             }
             education = session.Attributes["Education"]; // TODO - CAST TO TYPE
 
-            var responseText = $"Fun facts about the education"; // TODO - GET FACTS FROM EDUCATION
+            responseText = $"Fun facts about the education"; // TODO - GET FACTS FROM EDUCATION
 
-            var innerResponse = new PlainTextOutputSpeech
-            {
-                Text = responseText
-            };
+            innerResponse.Text = responseText;
 
             var attr = new Dictionary<string, object>()
             {
