@@ -57,7 +57,14 @@ namespace EmgAlexaHandler.Intents
 
             funFacts.Remove(funFact);
 
-            var responseText = $"Here are some fun facts about {education.Name}. {funFact} Do you want to make an information request or hear more about the education?";
+            var introtexts = new List<string>
+            {
+                $"Here are some fun facts about {education.Name}.",
+                $"Bet you didn't know this about {education.Name}.",
+                $"{education.Name} is very interesting.",
+            };
+
+            var responseText = $"{introtexts.OrderBy(i => Guid.NewGuid()).FirstOrDefault()} {funFact} Do you want to make an information request or hear more about the education?";
             
             var innerResponse = new PlainTextOutputSpeech()
             {
@@ -92,10 +99,13 @@ namespace EmgAlexaHandler.Intents
             if (education.Events != null && education.Events.Any())
             {
                 var locations = education.Events.Where(e => e.Location != null).Select(e => e.Location.Name).Distinct().ToArray();
-                var location = locations.Count() >= 3
-                    ? $"The education has events in a lot of places, here are some: {string.Join(", ", locations.Take(3))}."
-                    : $"The education has events in {string.Join(", ", locations)}.";
-                facts.Add(location);
+                if (locations.Any())
+                {
+                    var location = locations.Count() >= 3
+                        ? $"The education has events in a lot of places, here are some: {string.Join(", ", locations.Take(3))}."
+                        : $"The education has events in {string.Join(", ", locations)}.";
+                    facts.Add(location);
+                }
 
                 var nextEvent = education.Events.Where(e => e.Start != null && e.Start.StartDate.HasValue).OrderByDescending(e => e.Start.StartDate).FirstOrDefault();
                 var @event = nextEvent != null ? $"The next event will take place on {nextEvent.Start.StartDate:D}, in {nextEvent.Location.Name}." : $"This education doesn't have any events.";
