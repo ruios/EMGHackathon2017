@@ -8,7 +8,7 @@
     "configuration" : "Release",
     "framework"     : "netcoreapp1.0",
     "function-runtime" : "dotnetcore1.0",
-    "function-memory-size" : 128,
+    "function-memory-size" : 256,
     "function-timeout"     : 30,
     "function-handler"     : "EmgAlexaHandler::EmgAlexaHandler.Function::FunctionHandler",
     "function-name"        : "hackathon-grumpy-cat",

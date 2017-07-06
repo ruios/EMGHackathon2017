@@ -2,6 +2,7 @@
 using Alexa.NET.Request;
 using Alexa.NET.Request.Type;
 using Alexa.NET.Response;
+using Amazon.Lambda.Core;
 
 namespace EmgAlexaHandler.Intents
 {
@@ -12,7 +13,7 @@ namespace EmgAlexaHandler.Intents
             return name == "GoToNewSearch";
         }
 
-        public HandlerResult GetResponse(IntentRequest intentRequest, Session session)
+        public HandlerResult GetResponse(IntentRequest intentRequest, Session session, ILambdaContext context)
         {
             var responseText = $"What would you like to search for?";
 

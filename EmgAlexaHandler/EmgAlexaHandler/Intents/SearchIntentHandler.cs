@@ -3,6 +3,7 @@ using System.Linq;
 using Alexa.NET.Request;
 using Alexa.NET.Request.Type;
 using Alexa.NET.Response;
+using Amazon.Lambda.Core;
 using EmgAlexaHandler.Search;
 
 namespace EmgAlexaHandler.Intents
@@ -14,7 +15,7 @@ namespace EmgAlexaHandler.Intents
             return name == "SearchEducation";
         }
 
-        public HandlerResult GetResponse(IntentRequest intentRequest, Session session)
+        public HandlerResult GetResponse(IntentRequest intentRequest, Session session, ILambdaContext context)
         {
             var keyword = intentRequest.Intent.Slots["Education"].Value;
 

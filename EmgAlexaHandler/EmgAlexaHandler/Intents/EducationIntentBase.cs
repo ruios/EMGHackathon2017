@@ -4,6 +4,7 @@ using System.Text;
 using Alexa.NET.Request;
 using Alexa.NET.Request.Type;
 using Alexa.NET.Response;
+using Amazon.Lambda.Core;
 using EmgAlexaHandler.Search.Documents;
 
 namespace EmgAlexaHandler.Intents
@@ -13,9 +14,8 @@ namespace EmgAlexaHandler.Intents
         public abstract bool CanHandle(string name);
         public abstract HandlerResult GetResponse(Education education, IntentRequest intentRequest, Session session);
 
-        public HandlerResult GetResponse(IntentRequest intentRequest, Session session)
+        public HandlerResult GetResponse(IntentRequest intentRequest, Session session, ILambdaContext context)
         {
-            
 
             if (session.Attributes["Education"] == null)
             {

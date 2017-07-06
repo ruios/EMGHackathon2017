@@ -3,7 +3,9 @@ using System.Linq;
 using Alexa.NET.Request;
 using Alexa.NET.Request.Type;
 using Alexa.NET.Response;
+using Amazon.Lambda.Core;
 using EmgAlexaHandler.Search.Documents;
+using Newtonsoft.Json.Linq;
 
 namespace EmgAlexaHandler.Intents
 {
@@ -14,33 +16,43 @@ namespace EmgAlexaHandler.Intents
             return name == "HappyWithSearchResults";
         }
 
-        public HandlerResult GetResponse(IntentRequest intentRequest, Session session)
+        public HandlerResult GetResponse(IntentRequest intentRequest, Session session, ILambdaContext context)
         {
-            if (session.Attributes["EducationList"] == null)
+            var errorResponse = new HandlerResult
             {
-                var errorResponse = new PlainTextOutputSpeech
+                Response = new PlainTextOutputSpeech
                 {
                     Text = "Something weird happened. Let's try another search."
+                }
+            };
+
+            if (session.Attributes["EducationList"] == null)
+            {
+                return errorResponse;
+            }
+
+            var jArray = session.Attributes["EducationList"] as JArray;
+            if (jArray != null)
+            {
+                var educationList = jArray.ToObject<List<Education>>();
+            
+                var selectedResult = string.Join(", ", educationList.Select(i => $"{i.Name} from {i.Institutes.First().Name}"));
+                var responseText = $"Here are the three educations: {selectedResult}. Which one would you like to know more about?";
+
+                var innerResponse = new PlainTextOutputSpeech
+                {
+                    Text = responseText
                 };
 
-                return new HandlerResult {Response = errorResponse};
+                var attr = new Dictionary<string, object>()
+                {
+                    { "EducationList", educationList}
+                };
+
+                return new HandlerResult() { Response = innerResponse, ResponseSessionAttributes = attr};
             }
-            var educationList = (Education[])session.Attributes["EducationList"];
-            
-            var selectedResult = string.Join(", ", educationList.Select(i => $"{i.Name} from {i.Institutes.First().Name}"));
-            var responseText = $"Here are the three educations: {selectedResult}. Which one would you like to know more about?";
 
-            var innerResponse = new PlainTextOutputSpeech
-            {
-                Text = responseText
-            };
-
-            var attr = new Dictionary<string, object>()
-            {
-                { "EducationList", educationList}
-            };
-
-            return new HandlerResult() { Response = innerResponse, ResponseSessionAttributes = attr};
+            return errorResponse;
         }
     }
 }

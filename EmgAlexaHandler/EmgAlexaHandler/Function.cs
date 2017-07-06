@@ -60,7 +60,7 @@ namespace EmgAlexaHandler
 
                 if (intent != null)
                 {
-                    var resp = intent.GetResponse(intentRequest, input.Session);
+                    var resp = intent.GetResponse(intentRequest, input.Session, context);
                     innerResponse = resp.Response;
                     sessionAttributes = resp.ResponseSessionAttributes;
                 }
@@ -75,6 +75,7 @@ namespace EmgAlexaHandler
                 var responseText = $"Welcome to the education search, human! What would you like to search for?";
 
                 innerResponse = new PlainTextOutputSpeech();
+
                 (innerResponse as PlainTextOutputSpeech).Text = responseText;
             }
             else if (requestType == typeof(AudioPlayerRequest))
