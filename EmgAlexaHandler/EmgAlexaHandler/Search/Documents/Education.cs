@@ -8,9 +8,20 @@ namespace EmgAlexaHandler.Search.Documents
     {
         [Number(Name = "id")]
         public int Id { get; set; }
-        [Nested(Name = "institutes")]
-        public List<Institute> Institutes { get; set; }
+
         [Text(Name = "name")]
         public string Name { get; set; }
+
+        [Nested(Name = "institutes")]
+        public IReadOnlyList<Institute> Institutes { get; set; }
+
+        [Nested(Name = "events")]
+        public IReadOnlyList<EventNode> Events { get; set; }
+
+        [Nested(Name = "fields")]
+        public FieldNode Fields { get; set; }
+
+        [Nested(Name = "categories")]
+        public IReadOnlyList<CategoryNode> Categories { get; set; }
     }
 }

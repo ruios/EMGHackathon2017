@@ -2,7 +2,7 @@
 
 namespace EmgAlexaHandler.Search.Documents
 {
-    public class Institute
+    public class CategoryNode
     {
         [Text(Name = "name")]
         public string Name { get; set; }

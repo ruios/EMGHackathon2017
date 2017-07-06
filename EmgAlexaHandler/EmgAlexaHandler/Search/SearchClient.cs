@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Amazon.Lambda.Core;
 using Elasticsearch.Net;
 using Elasticsearch.Net.Aws;
 using EmgAlexaHandler.Search.Documents;
@@ -26,14 +27,21 @@ namespace EmgAlexaHandler.Search
             };
             var awsConnection = new AwsHttpConnection("eu-west-1", new StaticCredentialsProvider(cred));
             var settings = new ConnectionSettings(new StaticConnectionPool(new[] { new Uri(Environment.GetEnvironmentVariable("Endpoint")) }), awsConnection, new SerializerFactory());
-            settings.DisableDirectStreaming();
             _client = new ElasticClient(settings);
         }
 
         public IReadOnlyList<Education> Search(string q)
         {
+            LambdaLogger.Log($"Keyword: {q}");
+
             var query = Query<Education>.QueryString(e => e.Query(q).DefaultOperator(Operator.And));
             var request = CreateRequest(query);
+
+            //var stream = new System.IO.MemoryStream();
+            //_client.Serializer.Serialize(request, stream);
+            //var jsonQuery = System.Text.Encoding.UTF8.GetString(stream.ToArray());
+            //LambdaLogger.Log($"Query: {jsonQuery}");
+
             var response = _client.Search<Education>(request);
             return response.Documents.ToList();
         }
@@ -49,11 +57,16 @@ namespace EmgAlexaHandler.Search
                     {
                         "id",
                         "name",
-                        "institutes.id",
                         "institutes.name",
+                        "categories.name",
+                        "events.start.convertedStartDate",
+                        "events.location.name",
+                        "events.isDistance",
+                        "fields.reviewAverage",
+                        "fields.reviewCount",
                     }
                 }),
-                Size = 3,
+                Size = 3
             };
 
             return request;
