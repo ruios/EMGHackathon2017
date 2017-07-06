@@ -71,29 +71,17 @@ namespace EmgAlexaHandler
                         response.Response.ShouldEndSession = true;
                     }
                 }
-                else
-                {
-                    var responseText = $"Sorry, not in my knowledge!";
-
-                    innerResponse = new PlainTextOutputSpeech();
-                    (innerResponse as PlainTextOutputSpeech).Text = responseText;
-                }
             }
             else if (requestType == typeof(LaunchRequest))
             {
                 var responseText = $"Welcome to the education search! What would you like to search for?";
 
                 innerResponse = new PlainTextOutputSpeech();
-
                 (innerResponse as PlainTextOutputSpeech).Text = responseText;
-            }
-            else if (requestType == typeof(AudioPlayerRequest))
-            {
-                // do some audio response stuff
             }
             else
             {
-                var responseText = $"Sorry, I couldn't understand you!";
+                var responseText = $"Sorry, I can't handle it!";
 
                 innerResponse = new PlainTextOutputSpeech();
                 (innerResponse as PlainTextOutputSpeech).Text = responseText;
