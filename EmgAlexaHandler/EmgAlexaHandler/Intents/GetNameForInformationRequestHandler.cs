@@ -83,14 +83,13 @@ namespace EmgAlexaHandler.Intents
             var receiver = "elin.danielsson+alexa@studentum.se"; // FOR DEMO PURPOSE
 
             var subject = new Content("Information Request");
-            var body = new Content($"Information request for {educationName}.<br/><br/>Email: {email}<br/>Name: {name}");
+            var body = new Content($"Information request for {educationName}.\n\nEmail: {email}\nName: {name}");
 
             var sendRequest = new SendEmailRequest("elin.danielsson+fromalexa@studentum.se", new Destination(new List<string> { receiver }), new Message(subject, new Body(body)));
 
             var ses = CreateEmailService();
 
             LambdaLogger.Log($"Created ses client...");
-            LambdaLogger.Log(JsonConvert.SerializeObject(ses));
 
             var result = await ses.SendEmailAsync(sendRequest);
 
