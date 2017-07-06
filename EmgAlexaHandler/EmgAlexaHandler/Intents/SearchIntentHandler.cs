@@ -22,6 +22,7 @@ namespace EmgAlexaHandler.Intents
             var result = client.Search(keyword);
 
             if (!result.Any())
+            {
                 return new HandlerResult()
                 {
                     Response = new PlainTextOutputSpeech
@@ -29,6 +30,7 @@ namespace EmgAlexaHandler.Intents
                         Text = "Your search word sucked. Try again."
                     }
                 };
+            }
 
 
             var selectedResult = string.Join(", ", result.Select(i => $"{i.Name} from {i.Institutes.First().Name}"));

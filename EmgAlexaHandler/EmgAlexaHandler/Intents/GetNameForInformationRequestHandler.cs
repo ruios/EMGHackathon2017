@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Alexa.NET.Request;
 using Alexa.NET.Request.Type;
 using Alexa.NET.Response;
@@ -15,7 +16,9 @@ namespace EmgAlexaHandler.Intents
 
         public override HandlerResult GetResponse(Education education, IntentRequest intentRequest, Session session)
         {
-            var responseText = $"Thank you, human. We are now sending your request to #institute#. Maybe they will be in touch. Search again??";
+            var institute = education.Institutes.FirstOrDefault();
+
+            var responseText = $"Thank you, human. We are now sending your request to {institute.Name}. Maybe they will be in touch. Search again??";
 
             var innerResponse = new PlainTextOutputSpeech()
             {
@@ -24,7 +27,19 @@ namespace EmgAlexaHandler.Intents
       
             if (session.Attributes["Email"] == null)
             {
-                // TODO - RETURN TO ASK FOR EMAIL
+                responseText = $"We seem to be missing your email, if you want to do an information request, you need to provide your email address.";
+
+                innerResponse = new PlainTextOutputSpeech()
+                {
+                    Text = responseText
+                };
+
+                var errattr = new Dictionary<string, object>()
+                {
+                    { "Education", education}
+                };
+
+                return new HandlerResult() { Response = innerResponse, ResponseSessionAttributes = errattr };
             }
 
             var email = (string) session.Attributes["Email"];

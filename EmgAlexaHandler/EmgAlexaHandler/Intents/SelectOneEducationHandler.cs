@@ -63,11 +63,8 @@ namespace EmgAlexaHandler.Intents
                 return new HandlerResult { Response = errorResponse, ResponseSessionAttributes = errorattr};
             }
 
-            // TODO - get a new fun fact!
-
-            var funFact = $"This is fun!";
-
-            var responseText = $"Here are some fun facts about {education.Name}. {funFact} Do you want to make an information request or hear more about the education?";
+            var responseText =
+                $"You selected {education.Name}. Do you want to make an information request or hear more about the education?";
             
             var innerResponse = new PlainTextOutputSpeech
             {
