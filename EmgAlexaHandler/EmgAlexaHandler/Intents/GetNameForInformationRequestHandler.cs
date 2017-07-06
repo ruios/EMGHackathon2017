@@ -55,7 +55,9 @@ namespace EmgAlexaHandler.Intents
             var email = (string) session.Attributes["Email"];
             var name = intentRequest.Intent.Slots["Name"].Value;
 
-            SendEmail(email, name, education.Name);
+            LambdaLogger.Log($"Start sending email...");
+
+            SendEmail(email, name, education.Name).Wait();
 
             var attr = new Dictionary<string, object>()
             {
@@ -83,8 +85,12 @@ namespace EmgAlexaHandler.Intents
 
             if (result.HttpStatusCode != HttpStatusCode.OK)
             {
-                LambdaLogger.Log($"Error sending email");
+                LambdaLogger.Log($"Error sending email...");
                 LambdaLogger.Log(JsonConvert.SerializeObject(result));
+            }
+            else
+            {
+                LambdaLogger.Log($"Sending email successfully");
             }
         }
 

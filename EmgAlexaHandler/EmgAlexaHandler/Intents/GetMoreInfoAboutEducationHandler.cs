@@ -4,7 +4,9 @@ using System.Linq;
 using Alexa.NET.Request;
 using Alexa.NET.Request.Type;
 using Alexa.NET.Response;
+using Amazon.Lambda.Core;
 using EmgAlexaHandler.Search.Documents;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace EmgAlexaHandler.Intents
@@ -49,6 +51,9 @@ namespace EmgAlexaHandler.Intents
             }
 
             var funFact = funFacts.OrderBy(f => Guid.NewGuid()).First();
+
+            LambdaLogger.Log($"Fun fact selected: {funFact}");
+            LambdaLogger.Log(JsonConvert.SerializeObject(funFacts));
 
             funFacts.Remove(funFact);
 
