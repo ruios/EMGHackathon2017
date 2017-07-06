@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Alexa.NET.Request;
 using Alexa.NET.Request.Type;
@@ -40,6 +41,7 @@ namespace EmgAlexaHandler.Intents
                 var selected = (string)intentRequest.Intent.Slots["EducationNumber"].Value.ToLower();
             
                 Education education = null;
+ 
                 if (selected.Contains("third") || selected.Contains("3") || selected.Contains("three") || selected.Contains("3rd") && educationList.Count >= 3)
                 {
                     education = educationList[2];
@@ -54,16 +56,36 @@ namespace EmgAlexaHandler.Intents
                 {
                     education = educationList[0];
                 }
+             
 
                 if (education == null)
                 {
                     var selectedResult = string.Join(". . . ", educationList.Select(i => $"{i.Name}"));
 
-                    var errorResponseText = $"Choose one of the educations in the list. The first, the second or the third?";
+                    var responseTextWrongSelection = "Which education would you like to choose? The first one, the second one or the third one?";
+
+                    if (educationList.Count == 2)
+                    {
+                        responseTextWrongSelection = "Which education would you like to choose? The first or the second one?";
+                    }
+                    else if (educationList.Count == 1)
+                    {
+                        responseTextWrongSelection = "Do you want to make an information request or hear more about the education?";
+
+                        var innerResponse1 = new PlainTextOutputSpeech
+                        {
+                            Text = responseTextWrongSelection
+                        };
+                    }
+
+                    var errorResponseWrongSelection = new PlainTextOutputSpeech
+                    {
+                        Text = responseTextWrongSelection
+                    };
 
                     var errorResponse2 = new PlainTextOutputSpeech
                     {
-                        Text = errorResponseText
+                        Text = ErrorMessageHelper.GetErrorMessage()
                     };
 
                     var errorattr = new Dictionary<string, object>()
@@ -74,7 +96,7 @@ namespace EmgAlexaHandler.Intents
                     return new HandlerResult { Response = errorResponse2, ResponseSessionAttributes = errorattr};
                 }
 
-            var responseText = $"Congratulations, you managed to select {education.Name}. Do you want to make an information request or hear more about the education?";
+                var responseText = $"Congratulations, you managed to select {education.Name}. Do you want to make an information request or hear more about the education?";
             
                 var innerResponse = new PlainTextOutputSpeech
                 {

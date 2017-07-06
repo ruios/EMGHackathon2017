@@ -37,7 +37,31 @@ namespace EmgAlexaHandler.Intents
                 var educationList = jArray.ToObject<List<Education>>();
 
                 var selectedResult = string.Join(". . . ", educationList.Select(i => $"{i.Name}"));
-                var responseText = $"Which education would you like to know more about? The first, the second or the third?";
+
+                string responseText = "Which education would you like to choose? The first one, the second one or the third one?";
+
+                if (educationList.Count == 2)
+                {
+                    responseText = "Which education would you like to choose? The first or the second one?";
+                }
+                else if (educationList.Count == 1)
+                {
+                    responseText = "Do you want to make an information request or hear more about the education?";
+
+                    var innerResponse1 = new PlainTextOutputSpeech
+                    {
+                        Text = responseText
+                    };
+
+                    var attr1 = new Dictionary<string, object>()
+                    {
+                        { "EducationList", educationList},
+                        {"Education", educationList.First() },
+                        {"Previous", IntentTypes.Intent.HappyWithSearchResults},
+                    };
+                    return new HandlerResult() { Response = innerResponse1, ResponseSessionAttributes = attr1 };
+
+                }
 
                 var innerResponse = new PlainTextOutputSpeech
                 {
