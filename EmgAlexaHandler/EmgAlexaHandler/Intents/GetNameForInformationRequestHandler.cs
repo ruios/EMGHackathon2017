@@ -89,6 +89,9 @@ namespace EmgAlexaHandler.Intents
 
             var ses = CreateEmailService();
 
+            LambdaLogger.Log($"Created ses client...");
+            LambdaLogger.Log(JsonConvert.SerializeObject(ses));
+
             var result = await ses.SendEmailAsync(sendRequest);
 
             if (result.HttpStatusCode != HttpStatusCode.OK)
