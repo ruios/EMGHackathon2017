@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Alexa.NET.Request;
 using Alexa.NET.Request.Type;
 using Alexa.NET.Response;
+using EmgAlexaHandler.Search.Documents;
 
 namespace EmgAlexaHandler.Intents
 {
@@ -16,14 +18,17 @@ namespace EmgAlexaHandler.Intents
         {
             if (session.Attributes["EducationList"] == null)
             {
-                // TODO - ERROR, WE HAVE NO SEARCH RESULT
+                var errorResponse = new PlainTextOutputSpeech
+                {
+                    Text = "Something weird happened. Let's try another search."
+                };
+
+                return new HandlerResult {Response = errorResponse};
             }
-            var educationList = session.Attributes["EducationList"]; // TODO - CAST TO LIST
-
-
-            var responseText = $"Here are the three educations, which one would you like to know more about?";
-
-            // TODO - LIST THE EDUCATIONS IN THE RESPONSE
+            var educationList = (Education[])session.Attributes["EducationList"];
+            
+            var selectedResult = string.Join(", ", educationList.Select(i => $"{i.Name} from {i.Institutes.First().Name}"));
+            var responseText = $"Here are the three educations: {selectedResult}. Which one would you like to know more about?";
 
             var innerResponse = new PlainTextOutputSpeech
             {
@@ -35,7 +40,7 @@ namespace EmgAlexaHandler.Intents
                 { "EducationList", educationList}
             };
 
-            return new HandlerResult() { Response = innerResponse };
+            return new HandlerResult() { Response = innerResponse, ResponseSessionAttributes = attr};
         }
     }
 }
