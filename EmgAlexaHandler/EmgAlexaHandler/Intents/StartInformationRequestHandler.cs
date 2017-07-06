@@ -15,7 +15,7 @@ namespace EmgAlexaHandler.Intents
 
         public override HandlerResult GetResponse(Education education, IntentRequest intentRequest, Session session)
         {
-            var responseText = $"Please give me your email adress. Pronounce it clearly.";
+            var responseText = $"Please give me your email adress. Please pronounce it clearly.";
 
             var innerResponse = new PlainTextOutputSpeech()
             {

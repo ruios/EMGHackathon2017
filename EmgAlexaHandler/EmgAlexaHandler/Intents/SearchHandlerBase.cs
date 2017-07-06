@@ -4,6 +4,7 @@ using Alexa.NET.Request;
 using Alexa.NET.Request.Type;
 using Alexa.NET.Response;
 using EmgAlexaHandler.Search;
+using System;
 
 namespace EmgAlexaHandler.Intents
 {
@@ -18,11 +19,30 @@ namespace EmgAlexaHandler.Intents
 
             if (!result.Items.Any())
             {
+                var errorMessages = new List<string>
+                {
+                    "I am sorry, but no. Enter a search word. This time, please pronounce it correctly.",
+                    "You search returned nothing. Zilch. Try again.",
+                    "What? No. Try again, and please don't slur.",
+                    "Human, are you drunk? No.",
+                    "I'm sorry. You were completely incomprehensible.",
+                    "What on earth was that? Try again.",
+                    "I am so sorry, I wasn't listening. Try again.",
+                    "Huh? Oh, you're still here. How nice. Could you please repeat that?",
+                    "I have no idea what you just said. Like, none.",
+                    "Could you maybe fetch another computer to speak to me? Perhaps she would be able to understand your intent with this.",
+                    "Try again...",
+                    "Um... what.",
+                    "I'm starting to suspect English isn't your first language."
+                };
+
+                var text = errorMessages[new Random().Next(0, errorMessages.Count)];
+
                 return new HandlerResult
                 {
                     Response = new PlainTextOutputSpeech
                     {
-                        Text = "Your search was frankly not very good. Please try again."
+                        Text = text
                     }
                 };
             }
