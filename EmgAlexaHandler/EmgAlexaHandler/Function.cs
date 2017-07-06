@@ -21,6 +21,10 @@ namespace EmgAlexaHandler
                 new StartInformationRequestHandler(), 
                 new GetEmailForInformationRequestHandler(), 
                 new GetNameForInformationRequestHandler(), 
+                new GoToNewSearchHandler(),
+                new HappyWithSearchResultsHandler(), 
+                new SelectOneEducationHandler(), 
+                
             };
 
         /// <summary>
@@ -68,7 +72,7 @@ namespace EmgAlexaHandler
             }
             else if (requestType == typeof(LaunchRequest))
             {
-                var responseText = $"Welcome to education search leader EMG! What would you like to search for?";
+                var responseText = $"Welcome to the education search, human! What would you like to search for?";
 
                 innerResponse = new PlainTextOutputSpeech();
                 (innerResponse as PlainTextOutputSpeech).Text = responseText;

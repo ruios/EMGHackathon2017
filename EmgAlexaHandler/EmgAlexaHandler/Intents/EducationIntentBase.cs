@@ -32,7 +32,8 @@ namespace EmgAlexaHandler.Intents
                     "I have no idea what you just said. Like, none.",
                     "Could you maybe fetch another computer to speak to me? Perhaps she would be able to understand your intent with this.",
                     "Try again...",
-                    "Um... what?"
+                    "Um... what?",
+                    "I'm starting to suspect English isn't your first language, human."
                 };
 
                 var responseText = errorMessages[new Random().Next(0, errorMessages.Count)];
