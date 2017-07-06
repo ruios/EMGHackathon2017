@@ -68,8 +68,10 @@ namespace EmgAlexaHandler
                 }
                 else
                 {
-                    //Default
-                    log.LogLine("Intent not found");
+                    var responseText = $"Sorry, not in my knowledge!";
+
+                    innerResponse = new PlainTextOutputSpeech();
+                    (innerResponse as PlainTextOutputSpeech).Text = responseText;
                 }
             }
             else if (requestType == typeof(LaunchRequest))
@@ -83,6 +85,13 @@ namespace EmgAlexaHandler
             else if (requestType == typeof(AudioPlayerRequest))
             {
                 // do some audio response stuff
+            }
+            else
+            {
+                var responseText = $"Sorry, I couldn't understand you!";
+
+                innerResponse = new PlainTextOutputSpeech();
+                (innerResponse as PlainTextOutputSpeech).Text = responseText;
             }
 
             log.LogLine($"Starting to return the response...");
