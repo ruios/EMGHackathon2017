@@ -59,7 +59,7 @@ namespace EmgAlexaHandler.Intents
                     break;
 
                 case IntentTypes.Intent.SelectOneEducation:
-                    helpText += "You got three to choose from. Now choose. Say 'first', 'second' or 'third'. Do it now.";
+                    helpText += "You got three to choose from. Now choose.";
                     attr.Add("EducationList", session.Attributes["EducationList"]);
                     break;
 
@@ -74,7 +74,7 @@ namespace EmgAlexaHandler.Intents
                         break;
             }
 
-            helpText += "If you want to start over, just say 'stop'.";
+            helpText += "If you want to start over, just say 'new search'.";
 
 
             return new HandlerResult()
