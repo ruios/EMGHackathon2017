@@ -33,7 +33,7 @@ namespace EmgAlexaHandler.Intents
                 };
             }
 
-            var selectedResult = string.Join(", ", result.Items.Select(i => $"{i.Name} from {i.Institutes.First().Name}"));
+			var selectedResult = string.Join(". . . ", result.Select(i => $"{i.Name}"));
             var responseText = $"We found {result.Total} results. Here are the top three: {selectedResult}. Are you happy with these results, or do you want to do a new search??";
             
             var innerResponse = new PlainTextOutputSpeech

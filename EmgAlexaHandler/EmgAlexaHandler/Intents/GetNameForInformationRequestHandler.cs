@@ -1,14 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Threading.Tasks;
 using Alexa.NET.Request;
 using Alexa.NET.Request.Type;
 using Alexa.NET.Response;
 using Amazon;
+using Amazon.Lambda.Core;
 using Amazon.Runtime;
+using Amazon.Runtime.Internal.Util;
 using Amazon.SimpleEmail;
 using Amazon.SimpleEmail.Model;
 using EmgAlexaHandler.Search.Documents;
+using Newtonsoft.Json;
 
 namespace EmgAlexaHandler.Intents
 {
@@ -63,7 +68,7 @@ namespace EmgAlexaHandler.Intents
             return new HandlerResult() { Response = innerResponse, ResponseSessionAttributes = attr};
         }
 
-        private void SendEmail(string email, string name, string educationName)
+        private async Task SendEmail(string email, string name, string educationName)
         {
             var receiver = "elin.danielsson@studentum.se"; // FOR DEMO PURPOSE
 
@@ -74,7 +79,13 @@ namespace EmgAlexaHandler.Intents
 
             var ses = CreateEmailService();
 
-            ses.SendEmailAsync(sendRequest);
+            var result = await ses.SendEmailAsync(sendRequest);
+
+            if (result.HttpStatusCode != HttpStatusCode.OK)
+            {
+                LambdaLogger.Log($"Error sending email");
+                LambdaLogger.Log(JsonConvert.SerializeObject(result));
+            }
         }
 
         private IAmazonSimpleEmailService CreateEmailService()
