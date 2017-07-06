@@ -54,17 +54,17 @@ namespace EmgAlexaHandler.Intents
                     break;
 
                 case IntentTypes.Intent.HappyWithSearchResults:
-                    helpText += "You got two choices. Now choose, human. Information request or more information? Life is short.";
+                    helpText += "You got two choices. Now choose. Information request or more information? Life is short.";
                     attr.Add("EducationList", session.Attributes["EducationList"]);
                     break;
 
                 case IntentTypes.Intent.SelectOneEducation:
-                    helpText += "You got three to choose from. Now choose, human. Say 'first', 'second' or 'third'. Do it.";
+                    helpText += "You got three to choose from. Now choose. Say 'first', 'second' or 'third'. Do it.";
                     attr.Add("EducationList", session.Attributes["EducationList"]);
                     break;
 
                 case IntentTypes.Intent.StartInformationRequest:
-                    helpText += "You got three to choose from. Now choose, human. Say 'first', 'second' or 'third'. Do it.";
+                    helpText += "You got three to choose from. Now choose. Say 'first', 'second' or 'third'. Do it.";
                     attr.Add("EducationList", session.Attributes["EducationList"]);
                     break;
 

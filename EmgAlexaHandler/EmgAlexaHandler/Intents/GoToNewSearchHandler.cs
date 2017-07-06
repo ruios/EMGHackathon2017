@@ -15,7 +15,7 @@ namespace EmgAlexaHandler.Intents
 
         public HandlerResult GetResponse(IntentRequest intentRequest, Session session)
         {
-            var responseText = $"What would you like to search for, human?";
+            var responseText = $"Let's search again, because it's so much fun. What would you like to search for?";
 
             var innerResponse = new PlainTextOutputSpeech
             {
