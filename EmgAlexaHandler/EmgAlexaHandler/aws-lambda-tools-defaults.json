@@ -13,5 +13,5 @@
     "function-handler"     : "EmgAlexaHandler::EmgAlexaHandler.Function::FunctionHandler",
     "function-name"        : "hackathon-grumpy-cat",
     "environment-variables" : "",
-    "function-role"         : "arn:aws:iam::579491325482:role/emg-search-updater"
+    "function-role"         : "arn:aws:iam::579491325482:role/Grumpy-cat"
 }
