@@ -33,7 +33,7 @@ namespace EmgAlexaHandler.Intents
 
             if (!funFacts.Any())
             {
-                var text = $"I'm so sorry, there are no more fun facts. Nothing is fun anymore. Would you like to do an information request or try a new search?";
+                var text = $"I'm so sorry, there are no more fun facts. Would you like to do an information request or try a new search?";
 
                 var resp = new PlainTextOutputSpeech()
                 {
@@ -57,7 +57,7 @@ namespace EmgAlexaHandler.Intents
 
             funFacts.Remove(funFact);
 
-            var responseText = $"Here are some questionably fun facts about {education.Name}. {funFact} Do you want to make an information request or hear more about the education?";
+            var responseText = $"Here are some fun facts about {education.Name}. {funFact} Do you want to make an information request or hear more about the education?";
             
             var innerResponse = new PlainTextOutputSpeech()
             {
@@ -78,9 +78,9 @@ namespace EmgAlexaHandler.Intents
         {
             var facts = new List<string>();
 
-            var review = education.Fields?.ReviewCount != null
-                ? $"This education has {education.Fields.ReviewCount} reviews, with an average of {education.Fields.ReviewAverage}. {(education.Fields.ReviewAverage > 3 ? "That's pretty good" : "" )}"
-                : $"This education doesn't have any reviews yet";
+            var review = education.Fields?.ReviewCount != null && education.Fields.ReviewCount > 0
+                ? $"This education has {education.Fields.ReviewCount} reviews. With an average of {education.Fields.ReviewAverage}. {(education.Fields.ReviewAverage > 3 ? "That's pretty good." : "" )}"
+                : $"This education doesn't have any reviews yet.";
             facts.Add(review);
 
             if (education.Categories != null && education.Categories.Any())
@@ -93,12 +93,12 @@ namespace EmgAlexaHandler.Intents
             {
                 var locations = education.Events.Where(e => e.Location != null).Select(e => e.Location.Name).Distinct().ToArray();
                 var location = locations.Count() >= 3
-                    ? $"The education has events in a lot of places, here are some: {string.Join(", ", locations.Take(3))}"
-                    : $"The education has events in {string.Join(", ", locations)}";
+                    ? $"The education has events in a lot of places, here are some: {string.Join(", ", locations.Take(3))}."
+                    : $"The education has events in {string.Join(", ", locations)}.";
                 facts.Add(location);
 
                 var nextEvent = education.Events.Where(e => e.Start != null && e.Start.StartDate.HasValue).OrderByDescending(e => e.Start.StartDate).FirstOrDefault();
-                var @event = nextEvent != null ? $"The next event will take place on {nextEvent.Start.StartDate:D}, in {nextEvent.Location.Name}" : $"This education doesn't have any events.";
+                var @event = nextEvent != null ? $"The next event will take place on {nextEvent.Start.StartDate:D}, in {nextEvent.Location.Name}." : $"This education doesn't have any events.";
                 facts.Add(@event);
             }
 

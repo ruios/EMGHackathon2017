@@ -57,7 +57,15 @@ namespace EmgAlexaHandler.Intents
 
             LambdaLogger.Log($"Start sending email...");
 
-            SendEmail(email, name, education.Name).Wait();
+            try
+            {
+                SendEmail(email, name, education.Name).Wait();
+            }
+            catch (Exception e)
+            {
+                LambdaLogger.Log("Exception sending email");
+                LambdaLogger.Log(JsonConvert.SerializeObject(e));
+            }
 
             var attr = new Dictionary<string, object>()
             {
