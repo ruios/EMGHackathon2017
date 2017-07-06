@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Amazon.Lambda.Core;
@@ -62,13 +63,21 @@ namespace EmgAlexaHandler
 
                 if (intent != null)
                 {
-                    var resp = intent.GetResponse(intentRequest, input.Session);
-                    innerResponse = resp.Response;
-                    sessionAttributes = resp.ResponseSessionAttributes;
-
-                    if (intent is ExitIntentHandler)
+                    try
                     {
-                        response.Response.ShouldEndSession = true;
+                        var resp = intent.GetResponse(intentRequest, input.Session);
+                        innerResponse = resp.Response;
+                        sessionAttributes = resp.ResponseSessionAttributes;
+
+                        if (intent is ExitIntentHandler)
+                        {
+                            response.Response.ShouldEndSession = true;
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        log.LogLine($"Message: {e.Message}");
+                        log.LogLine($"Stacktrace: {e.StackTrace}");
                     }
                 }
             }
