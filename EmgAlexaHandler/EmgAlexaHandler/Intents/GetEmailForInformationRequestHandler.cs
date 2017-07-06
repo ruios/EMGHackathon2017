@@ -16,7 +16,25 @@ namespace EmgAlexaHandler.Intents
 
         public override HandlerResult GetResponse(Education education, IntentRequest intentRequest, Session session)
         {
-            var email = intentRequest.Intent.Slots["Email"].Value;
+            var email = (string)intentRequest.Intent.Slots["Email"].Value;
+
+            if (string.IsNullOrEmpty(email))
+            {
+                var text = $"To continue with the information request, you need to first give me your email address. Pronounce it clearly.";
+
+                var resp = new PlainTextOutputSpeech()
+                {
+                    Text = text
+                };
+
+                var respattr = new Dictionary<string, object>()
+                {
+                    { "Education", education},
+                    {"Previous", IntentTypes.Intent.GetEmailForInformationRequest},
+                };
+
+                return new HandlerResult() { Response = resp, ResponseSessionAttributes = respattr };
+            }
 
             var responseText = $"Do you have a first name? Say it.";
 

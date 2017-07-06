@@ -41,7 +41,8 @@ namespace EmgAlexaHandler.Intents
                 var respattr = new Dictionary<string, object>()
                 {
                     { "Education", education},
-                    {"FunFacts", funFacts }
+                    {"FunFacts", funFacts },
+                    {"Previous", IntentTypes.Intent.GetMoreInfoAboutEducation}
                 };
 
                 return new HandlerResult() { Response = resp, ResponseSessionAttributes = respattr};
