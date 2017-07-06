@@ -34,7 +34,7 @@ namespace EmgAlexaHandler.Intents
                     "Could you maybe fetch another computer to speak to me? Perhaps she would be able to understand your intent with this.",
                     "Try again...",
                     "Um... what?",
-                    "I'm starting to suspect English isn't your first language, human."
+                    "I'm starting to suspect English isn't your first language."
                 };
 
                 var responseText = errorMessages[new Random().Next(0, errorMessages.Count)];
@@ -61,7 +61,7 @@ namespace EmgAlexaHandler.Intents
             {
                 Response = new PlainTextOutputSpeech
                 {
-                    Text = "Oops, something went wrong. let's pick anonther education."
+                    Text = "Oops, something went wrong. Please try saying it with more optimism."
                 }
             };
         }

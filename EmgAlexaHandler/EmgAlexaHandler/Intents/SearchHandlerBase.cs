@@ -22,7 +22,7 @@ namespace EmgAlexaHandler.Intents
                 {
                     Response = new PlainTextOutputSpeech
                     {
-                        Text = "Your search word sucked. Try again."
+                        Text = "Your search was frankly not very good. Please try again."
                     }
                 };
             }

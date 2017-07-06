@@ -36,7 +36,7 @@ namespace EmgAlexaHandler.Intents
                 return new HandlerResult() { Response = resp, ResponseSessionAttributes = respattr };
             }
 
-            var responseText = $"Do you have a first name? Say it.";
+            var responseText = $"Do you have a first name? Please give it to me.";
 
             var innerResponse = new PlainTextOutputSpeech()
             {

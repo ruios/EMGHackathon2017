@@ -28,7 +28,7 @@ namespace EmgAlexaHandler.Intents
         {
             var institute = education.Institutes.FirstOrDefault();
 
-            var responseText = $"Thank you, human. We are now sending your request to {institute.Name}. Maybe they will be in touch. Do another search! We love searches.";
+            var responseText = $"Thank you. We are now sending your request to {institute.Name}. Maybe they will be in touch. Do another search! I love searching.";
 
             var innerResponse = new PlainTextOutputSpeech()
             {
@@ -37,7 +37,7 @@ namespace EmgAlexaHandler.Intents
       
             if (session.Attributes["Email"] == null)
             {
-                responseText = $"I'm sorry, but we seem to have dropped your email address somewhere. Please state it again, human.";
+                responseText = $"I'm sorry, but I seem to have dropped your email address somewhere. Please state it again.";
 
                 innerResponse = new PlainTextOutputSpeech()
                 {

@@ -17,7 +17,7 @@ namespace EmgAlexaHandler.Intents
             {
                 Response = new PlainTextOutputSpeech
                 {
-                    Text = $"Thank you for using the EMG search, hope you found what you were looking for."
+                    Text = $"Thank you for using the EMG search. You will not regret this."
                 }
             };
         }
