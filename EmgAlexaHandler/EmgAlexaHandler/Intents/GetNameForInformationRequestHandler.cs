@@ -1,8 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Alexa.NET.Request;
 using Alexa.NET.Request.Type;
 using Alexa.NET.Response;
+using Amazon;
+using Amazon.Runtime;
+using Amazon.SimpleEmail;
+using Amazon.SimpleEmail.Model;
 using EmgAlexaHandler.Search.Documents;
 
 namespace EmgAlexaHandler.Intents
@@ -45,7 +50,7 @@ namespace EmgAlexaHandler.Intents
             var email = (string) session.Attributes["Email"];
             var name = intentRequest.Intent.Slots["Name"].Value;
 
-            // TODO - SEND EMAIL TO "INSTITUTE" (FOR DEMO)
+            SendEmail(email, name, education.Name);
 
             var attr = new Dictionary<string, object>()
             {
@@ -55,6 +60,24 @@ namespace EmgAlexaHandler.Intents
             };
 
             return new HandlerResult() { Response = innerResponse };
+        }
+
+        private void SendEmail(string email, string name, string educationName)
+        {
+            var subject = new Content("Information Request");
+            var body = new Content($"Information request for {educationName}.<br/><br/>Email: {email}<br/>Name: {name}");
+
+            var sendRequest = new SendEmailRequest("", new Destination(new List<string> { email }), new Message(subject, new Body(body)));
+
+            var ses = CreateEmailService();
+
+            ses.SendEmailAsync(sendRequest);
+        }
+
+        private IAmazonSimpleEmailService CreateEmailService()
+        {
+            var credentials = new BasicAWSCredentials(Environment.GetEnvironmentVariable("EmailAccessKey"), Environment.GetEnvironmentVariable("EmailSecretKey"));
+            return new AmazonSimpleEmailServiceClient(credentials, RegionEndpoint.USEast1);
         }
     }
 }
