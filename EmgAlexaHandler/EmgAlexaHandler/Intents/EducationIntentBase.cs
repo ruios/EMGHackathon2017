@@ -17,8 +17,7 @@ namespace EmgAlexaHandler.Intents
 
         public HandlerResult GetResponse(IntentRequest intentRequest, Session session)
         {
-
-            if (session.Attributes["Education"] == null)
+            if (!session.Attributes.ContainsKey("Education"))
             {
                 var errorMessages = new List<string>
                 {

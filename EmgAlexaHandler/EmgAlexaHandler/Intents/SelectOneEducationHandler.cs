@@ -40,17 +40,17 @@ namespace EmgAlexaHandler.Intents
                 var selected = (string)intentRequest.Intent.Slots["EducationNumber"].Value.ToLower();
             
                 Education education = null;
-                if (selected.Contains("third") || selected.Contains("3") || selected.Contains("three") || selected.Contains("3rd"))
+                if (selected.Contains("third") || selected.Contains("3") || selected.Contains("three") || selected.Contains("3rd") && educationList.Count >= 3)
                 {
                     education = educationList[2];
                 }
 
-                else if (selected.Contains("second") || selected.Contains("2") || selected.Contains("two") || selected.Contains("2nd"))
+                else if (selected.Contains("second") || selected.Contains("2") || selected.Contains("two") || selected.Contains("2nd") && educationList.Count >= 2)
                 {
                     education = educationList[1];
                 }
 
-                else if (selected.Contains("first") || selected.Contains("1") || selected.Contains("one") || selected.Contains("1st"))
+                else if (selected.Contains("first") || selected.Contains("1") || selected.Contains("one") || selected.Contains("1st") && educationList.Count >= 1)
                 {
                     education = educationList[0];
                 }
