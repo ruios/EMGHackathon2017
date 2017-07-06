@@ -58,7 +58,7 @@ namespace EmgAlexaHandler.Intents
                 if (education == null)
                 {
                     var selectedResult = string.Join(", ", educationList.Select(i => $"{i.Name} from {i.Institutes.First().Name}"));
-                    var errorResponseText = $"You need to select one of the educations in the list, please do so by picking the first, second or third. Here are the three educations: {selectedResult}. Which one would you like to know more about?";
+                    var errorResponseText = $"Select one of the educations in the list: {selectedResult}. First, second or third?";
 
                     var errorResponse2 = new PlainTextOutputSpeech
                     {
@@ -73,7 +73,7 @@ namespace EmgAlexaHandler.Intents
                     return new HandlerResult { Response = errorResponse2, ResponseSessionAttributes = errorattr};
                 }
 
-                var responseText = $"You selected {education.Name}. Do you want to make an information request or hear more about the education?";
+            var responseText = $"Congratulations, you managed to select {education.Name}. Do you want to make an information request or hear more about the education?";
             
                 var innerResponse = new PlainTextOutputSpeech
                 {
@@ -82,7 +82,7 @@ namespace EmgAlexaHandler.Intents
 
                 var attr = new Dictionary<string, object>()
                 {
-                    { "EducationList", educationList},
+                    {"EducationList", educationList},
                     {"Education", education },
                 	{"Previous", IntentTypes.Intent.SelectOneEducation}
 				};

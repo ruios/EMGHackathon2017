@@ -32,23 +32,49 @@ namespace EmgAlexaHandler.Intents
             switch (previous)
             {
                 case IntentTypes.Intent.GetEmailForInformationRequest:
-                    helpText += "This is where you enter your first name or serial number for the information request you have started on. To continue please state you name.";
+                    helpText += "This is where you enter your first name or bar code for the information request you have started on. To continue please state you name.";
                     attr.Add("Education", session.Attributes["Education"]);
                     attr.Add("Email", session.Attributes["Email"]);
                     break;
 
                 case IntentTypes.Intent.GetMoreInfoAboutEducation:
-                    helpText += "This is where you enter your first name or serial number for the information request you have started on. To continue please state you name.";
+                    helpText += "You really only have two options here. How hard can it be?";
                     attr.Add("Education", session.Attributes["Education"]);
-                    attr.Add("Email", session.Attributes["Email"]);
                     break;
 
+                case IntentTypes.Intent.GetNameForInformationRequest:
+                    helpText += "Do a new search. Scramble your brain for a search word, or any word. Really, any verbalized sign of intelligence will do at this point.";
+                    attr.Add("Education", session.Attributes["Education"]);
+                    attr.Add("Email", session.Attributes["Email"]);
+                    attr.Add("Name", session.Attributes["Name"]);
+                    break;
+
+                case IntentTypes.Intent.GoToNewSearch:
+                    helpText += "Do a new search. Scramble your brain for a search word, or any word. Really, any verbalized sign of intelligence will do at this point.";
+                    break;
+
+                case IntentTypes.Intent.HappyWithSearchResults:
+                    helpText += "You got two choices. Now choose, human. Information request or more information? Life is short.";
+                    attr.Add("EducationList", session.Attributes["EducationList"]);
+                    break;
+
+                case IntentTypes.Intent.SelectOneEducation:
+                    helpText += "You got three to choose from. Now choose, human. Say 'first', 'second' or 'third'. Do it.";
+                    attr.Add("EducationList", session.Attributes["EducationList"]);
+                    break;
+
+                case IntentTypes.Intent.StartInformationRequest:
+                    helpText += "You got three to choose from. Now choose, human. Say 'first', 'second' or 'third'. Do it.";
+                    attr.Add("EducationList", session.Attributes["EducationList"]);
+                    break;
+
+
                 default:
-                    helpText = "this is the default help!!!";
+                    helpText = "There is really nothing special to add here.";
                         break;
             }
 
-            helpText += "If you want to exit, you can say";
+            helpText += "If you want to start over, just say 'stop'.";
 
 
             return new HandlerResult()

@@ -24,6 +24,7 @@ namespace EmgAlexaHandler
                 new GoToNewSearchHandler(),
                 new HappyWithSearchResultsHandler(), 
                 new SelectOneEducationHandler(), 
+                new HelpHandler(), 
                 
             };
 
