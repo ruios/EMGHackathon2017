@@ -13,7 +13,7 @@ namespace EmgAlexaHandler.Intents
             return name == "GoToNewSearch";
         }
 
-        public HandlerResult GetResponse(IntentRequest intentRequest, Session session, ILambdaContext context)
+        public HandlerResult GetResponse(IntentRequest intentRequest, Session session)
         {
             var responseText = $"What would you like to search for?";
 

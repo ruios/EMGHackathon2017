@@ -15,7 +15,7 @@ namespace EmgAlexaHandler.Intents
             return name == "SearchEducation";
         }
 
-        public HandlerResult GetResponse(IntentRequest intentRequest, Session session, ILambdaContext context)
+        public HandlerResult GetResponse(IntentRequest intentRequest, Session session)
         {
             var keyword = intentRequest.Intent.Slots["Education"].Value;
 

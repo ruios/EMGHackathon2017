@@ -16,7 +16,7 @@ namespace EmgAlexaHandler.Intents
             return name == "HappyWithSearchResults";
         }
 
-        public HandlerResult GetResponse(IntentRequest intentRequest, Session session, ILambdaContext context)
+        public HandlerResult GetResponse(IntentRequest intentRequest, Session session)
         {
             var errorResponse = new HandlerResult
             {

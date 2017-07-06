@@ -15,7 +15,7 @@ namespace EmgAlexaHandler.Intents
         public abstract bool CanHandle(string name);
         public abstract HandlerResult GetResponse(Education education, IntentRequest intentRequest, Session session);
 
-        public HandlerResult GetResponse(IntentRequest intentRequest, Session session, ILambdaContext context)
+        public HandlerResult GetResponse(IntentRequest intentRequest, Session session)
         {
 
             if (session.Attributes["Education"] == null)

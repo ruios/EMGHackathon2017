@@ -60,7 +60,7 @@ namespace EmgAlexaHandler
 
                 if (intent != null)
                 {
-                    var resp = intent.GetResponse(intentRequest, input.Session, context);
+                    var resp = intent.GetResponse(intentRequest, input.Session);
                     innerResponse = resp.Response;
                     sessionAttributes = resp.ResponseSessionAttributes;
                 }

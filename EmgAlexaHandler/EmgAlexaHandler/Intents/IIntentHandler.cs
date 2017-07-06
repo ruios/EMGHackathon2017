@@ -9,7 +9,7 @@ namespace EmgAlexaHandler.Intents
     public interface IIntentHandler
     {
         bool CanHandle(string name);
-        HandlerResult GetResponse(IntentRequest intentRequest, Session session, ILambdaContext context);
+        HandlerResult GetResponse(IntentRequest intentRequest, Session session);
     }
 
     public class HandlerResult
