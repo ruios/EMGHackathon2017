@@ -48,7 +48,7 @@ namespace EmgAlexaHandler.Intents
             }
 
             var selectedResult = string.Join(", ", result.Items.Select(i => $"{i.Name}"));
-            var responseText = $"We found {result.Total} results. Here are the top {selectedResult.Length}: {selectedResult}. Are you happy with these results, or do you want to do a new search??";
+            var responseText = $"We found {result.Total} results. Here are the top {result.Items.Count}: {selectedResult}. Are you happy with these results, or do you want to do a new search??";
 
             var innerResponse = new PlainTextOutputSpeech
             {
