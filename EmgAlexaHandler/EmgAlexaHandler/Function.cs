@@ -26,7 +26,7 @@ namespace EmgAlexaHandler
                 new HappyWithSearchResultsHandler(), 
                 new SelectOneEducationHandler(), 
                 new HelpHandler(), 
-                
+                new ExitIntentHandler(), 
             };
 
         /// <summary>
@@ -65,6 +65,11 @@ namespace EmgAlexaHandler
                     var resp = intent.GetResponse(intentRequest, input.Session);
                     innerResponse = resp.Response;
                     sessionAttributes = resp.ResponseSessionAttributes;
+
+                    if (intent is ExitIntentHandler)
+                    {
+                        response.Response.ShouldEndSession = true;
+                    }
                 }
                 else
                 {
@@ -76,7 +81,7 @@ namespace EmgAlexaHandler
             }
             else if (requestType == typeof(LaunchRequest))
             {
-                var responseText = $"Welcome to the education search, human! What would you like to search for?";
+                var responseText = $"Welcome to the education search! What would you like to search for?";
 
                 innerResponse = new PlainTextOutputSpeech();
 
