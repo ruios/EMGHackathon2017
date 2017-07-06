@@ -19,7 +19,7 @@ namespace EmgAlexaHandler.Intents
 
             if (session.Attributes["Education"] == null)
             {
-                string responseText = $"Yeah, no. Try again, human. Search for something.";
+                string responseText = $"Yeah, no. Say a search word. Pronounce it correctly this time..";
 
                 var innerResponse = new PlainTextOutputSpeech()
                 {

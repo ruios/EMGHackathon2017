@@ -2,35 +2,25 @@
 using Alexa.NET.Request;
 using Alexa.NET.Request.Type;
 using Alexa.NET.Response;
+using EmgAlexaHandler.Search.Documents;
 
 namespace EmgAlexaHandler.Intents
 {
-    public class StartInformationRequestHandler : IIntentHandler
+    public class StartInformationRequestHandler : EducationIntentBase
     {
-        public bool CanHandle(string name)
+        public override bool CanHandle(string name)
         {
             return name == "StartInformationRequest";
         }
 
-        public HandlerResult GetResponse(IntentRequest intentRequest, Session session)
+        public override HandlerResult GetResponse(Education education, IntentRequest intentRequest, Session session)
         {
-            string responseText;
-            var innerResponse = new PlainTextOutputSpeech();
+            var responseText = $"Please give me your email adress. Pronounce it clearly.";
 
-            object education;
-            if (session.Attributes["Education"] == null)
+            var innerResponse = new PlainTextOutputSpeech()
             {
-                responseText = $"This didn't work like, at all. Try another search word.";
-
-                innerResponse.Text = responseText;
-
-                return new HandlerResult() { Response = innerResponse};
-            }
-            education = session.Attributes["Education"]; // TODO - CAST TO TYPE
-
-            responseText = $"To make an information request, we will first need your email address.";
-
-            innerResponse.Text = responseText;
+                Text = responseText
+            };
 
             var attr = new Dictionary<string, object>()
             {

@@ -2,32 +2,26 @@
 using Alexa.NET.Request;
 using Alexa.NET.Request.Type;
 using Alexa.NET.Response;
+using EmgAlexaHandler.Search.Documents;
 
 namespace EmgAlexaHandler.Intents
 {
-    public class GetNameForInformationRequestHandler: IIntentHandler
+    public class GetNameForInformationRequestHandler: EducationIntentBase
     {
-        public bool CanHandle(string name)
+        public override bool CanHandle(string name)
         {
             return name == "GetNameForInformationRequest";
         }
 
-        public HandlerResult GetResponse(IntentRequest intentRequest, Session session)
+        public override HandlerResult GetResponse(Education education, IntentRequest intentRequest, Session session)
         {
-            string responseText;
-            var innerResponse = new PlainTextOutputSpeech();
+            var responseText = $"Thank you, human. We are now sending your request to #institute#. Maybe they will be in touch. Search again??";
 
-            object education;
-            if (session.Attributes["Education"] == null)
+            var innerResponse = new PlainTextOutputSpeech()
             {
-                responseText = $"Yeah, no. Say a search word. Pronounce it correctly this time.";
-
-                innerResponse.Text = responseText;
-
-                return new HandlerResult() { Response = innerResponse };
-            }
-            education = session.Attributes["Education"]; // TODO - CAST TO TYPE
-
+                Text = responseText
+            };
+      
             if (session.Attributes["Email"] == null)
             {
                 // TODO - RETURN TO ASK FOR EMAIL
@@ -38,11 +32,13 @@ namespace EmgAlexaHandler.Intents
 
             // TODO - SEND EMAIL TO "INSTITUTE" (FOR DEMO)
 
-            responseText = 
-                $"Thank you for the information. We are now sending your request to #institute#. They will contact you shorthly. Do you want to do another search?";
+            var attr = new Dictionary<string, object>()
+            {
+                { "Education", education},
+                { "Email", email },
+                { "Name", name },
+            };
 
-           innerResponse.Text = responseText;
-            
             return new HandlerResult() { Response = innerResponse };
         }
     }

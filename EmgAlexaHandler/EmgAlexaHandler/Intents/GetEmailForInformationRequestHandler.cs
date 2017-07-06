@@ -18,7 +18,7 @@ namespace EmgAlexaHandler.Intents
         {
             var email = intentRequest.Intent.Slots["Email"].Value;
 
-            var responseText = $"Before we make the information request, we also need your first name";
+            var responseText = $"Do you have a first name? Say it.";
 
             var innerResponse = new PlainTextOutputSpeech()
             {

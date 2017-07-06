@@ -2,37 +2,25 @@ using System.Collections.Generic;
 using Alexa.NET.Request;
 using Alexa.NET.Request.Type;
 using Alexa.NET.Response;
+using EmgAlexaHandler.Search.Documents;
 
 namespace EmgAlexaHandler.Intents
 {
-    public class GetMoreInfoAboutEducationHandler : IIntentHandler
+    public class GetMoreInfoAboutEducationHandler : EducationIntentBase
     {
-        public bool CanHandle(string name)
+        public override bool CanHandle(string name)
         {
             return name == "GetMoreInfoAboutEducation";
         }
 
-        public HandlerResult GetResponse(IntentRequest intentRequest, Session session)
+        public override HandlerResult GetResponse(Education education, IntentRequest intentRequest, Session session)
         {
-            string responseText;
-            var innerResponse = new PlainTextOutputSpeech();
+            var responseText = $"Here are some facts about the education you chose: "; // TODO - GET FACTS FROM EDUCATION
 
-
-
-            object education;
-            if (session.Attributes["Education"] == null)
+            var innerResponse = new PlainTextOutputSpeech()
             {
-                responseText = $"Yeah, no. Try again, human. Search for something.";
-
-                innerResponse.Text = responseText;
-
-                return new HandlerResult() { Response = innerResponse };
-            }
-            education = session.Attributes["Education"]; // TODO - CAST TO TYPE
-
-            responseText = $"Fun facts about the education"; // TODO - GET FACTS FROM EDUCATION
-
-            innerResponse.Text = responseText;
+                Text = responseText
+            };
 
             var attr = new Dictionary<string, object>()
             {
