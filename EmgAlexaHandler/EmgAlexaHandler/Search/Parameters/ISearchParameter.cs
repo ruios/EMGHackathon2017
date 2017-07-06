@@ -24,7 +24,7 @@ namespace EmgAlexaHandler.Search.Parameters
 
         public FreetextParameter(string keyword)
         {
-            Keyword = keyword;
+            Keyword = keyword.ToLower();
         }
     }
 

@@ -44,7 +44,7 @@ namespace EmgAlexaHandler.Search
             {
                 Must = new[]
                 {
-                    Query<AttributeNode>.Term(i => i.Field("search-name").Value(q)),
+                    Query<AttributeNode>.Term(i => i.Field("search-name").Value(q.ToLower())),
                     Query<AttributeNode>.Term(i => i.Field("type").Value(type)),
                 }
             };
