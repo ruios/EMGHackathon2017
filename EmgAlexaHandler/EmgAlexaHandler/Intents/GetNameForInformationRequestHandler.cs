@@ -41,7 +41,7 @@ namespace EmgAlexaHandler.Intents
 
                 var errattr = new Dictionary<string, object>()
                 {
-                    { "Education", education}
+                    { "Education", education},
                 };
 
                 return new HandlerResult() { Response = innerResponse, ResponseSessionAttributes = errattr };
@@ -57,9 +57,10 @@ namespace EmgAlexaHandler.Intents
                 { "Education", education},
                 { "Email", email },
                 { "Name", name },
+                {"Previous", IntentTypes.Intent.GetNameForInformationRequest},
             };
 
-            return new HandlerResult() { Response = innerResponse };
+            return new HandlerResult() { Response = innerResponse, ResponseSessionAttributes = attr};
         }
 
         private void SendEmail(string email, string name, string educationName)

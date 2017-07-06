@@ -84,8 +84,9 @@ namespace EmgAlexaHandler.Intents
                 var attr = new Dictionary<string, object>()
                 {
                     { "EducationList", educationList},
-                    {"Education", education }
-                };
+                    {"Education", education },
+                	{"Previous", IntentTypes.Intent.SelectOneEducation}
+				};
 
                 return new HandlerResult() { Response = innerResponse, ResponseSessionAttributes = attr};
             }

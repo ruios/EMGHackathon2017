@@ -22,7 +22,13 @@ namespace EmgAlexaHandler.Intents
                 Text = responseText
             };
 
-            return new HandlerResult() { Response = innerResponse };
+            var attr = new Dictionary<string, object>()
+            {
+                {"Previous", IntentTypes.Intent.GoToNewSearch},
+            };
+
+            return new HandlerResult() { Response = innerResponse, ResponseSessionAttributes = attr};
+
         }
     }
 }

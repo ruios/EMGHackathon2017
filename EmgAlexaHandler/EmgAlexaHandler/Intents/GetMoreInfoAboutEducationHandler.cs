@@ -19,7 +19,7 @@ namespace EmgAlexaHandler.Intents
 
             var funFact = $"This is fun!";
 
-            var responseText = $"Here are some fun facts about {education.Name}. {funFact} Do you want to make an information request or hear more about the education?";
+            var responseText = $"Here are some questionably fun facts about {education.Name}. {funFact} Do you want to make an information request or hear more about the education?";
             
             var innerResponse = new PlainTextOutputSpeech()
             {
@@ -28,7 +28,8 @@ namespace EmgAlexaHandler.Intents
 
             var attr = new Dictionary<string, object>()
             {
-                { "Education", education}
+                { "Education", education},
+                {"Previous", IntentTypes.Intent.GetMoreInfoAboutEducation},
             };
 
             return new HandlerResult(){Response = innerResponse, ResponseSessionAttributes = attr};
