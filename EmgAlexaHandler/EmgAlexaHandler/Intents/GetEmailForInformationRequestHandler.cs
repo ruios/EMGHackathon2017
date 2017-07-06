@@ -43,6 +43,11 @@ namespace EmgAlexaHandler.Intents
                 Text = responseText
             };
 
+            if (!string.IsNullOrEmpty(email))
+            {
+                email = email.Replace(" at ", "@");
+            }
+
             var attr = new Dictionary<string, object>()
             {
                 { "Education", education},
