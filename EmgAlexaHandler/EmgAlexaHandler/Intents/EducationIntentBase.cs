@@ -6,6 +6,7 @@ using Alexa.NET.Request.Type;
 using Alexa.NET.Response;
 using Amazon.Lambda.Core;
 using EmgAlexaHandler.Search.Documents;
+using Newtonsoft.Json.Linq;
 
 namespace EmgAlexaHandler.Intents
 {
@@ -46,11 +47,23 @@ namespace EmgAlexaHandler.Intents
                 return new HandlerResult() { Response = innerResponse };
             }
 
-            var education = (Education)session.Attributes["Education"];
+            var jObject = session.Attributes["Education"] as JObject;
+            if (jObject != null)
+            {
+                var education = jObject.ToObject<Education>();
 
-            var r = GetResponse(education, intentRequest, session);
+                var r = GetResponse(education, intentRequest, session);
 
-            return r;
+                return r;
+            }
+
+            return new HandlerResult
+            {
+                Response = new PlainTextOutputSpeech
+                {
+                    Text = "Oops, something goes wrong. let's pick anonther education."
+                }
+            };
         }
     }
 }
