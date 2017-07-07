@@ -33,7 +33,7 @@ namespace EmgAlexaHandler.Intents
 
             if (!funFacts.Any())
             {
-                var text = $"I'm so sorry, there are no more fun facts. Would you like to do an information request or try a new search?";
+                var text = $"I'm so sorry, there are no more fun facts. Nothing is fun anymore. Would you like to do an information request or try a new search?";
 
                 var resp = new PlainTextOutputSpeech()
                 {
