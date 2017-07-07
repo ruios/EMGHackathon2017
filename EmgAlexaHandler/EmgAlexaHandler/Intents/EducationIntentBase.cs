@@ -17,7 +17,7 @@ namespace EmgAlexaHandler.Intents
 
         public HandlerResult GetResponse(IntentRequest intentRequest, Session session)
         {
-            if (!session.Attributes.ContainsKey("Education"))
+            if (session.Attributes == null || !session.Attributes.ContainsKey("Education"))
             {
                 var innerResponse = new PlainTextOutputSpeech()
                 {

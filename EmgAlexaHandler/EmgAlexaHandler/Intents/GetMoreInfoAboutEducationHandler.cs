@@ -21,7 +21,7 @@ namespace EmgAlexaHandler.Intents
         public override HandlerResult GetResponse(Education education, IntentRequest intentRequest, Session session)
         {
             List<string> funFacts;
-            if (!session.Attributes.ContainsKey("FunFacts"))
+            if (session.Attributes == null || !session.Attributes.ContainsKey("FunFacts"))
             {
                 funFacts = GetAllFunFacts(education);
             }

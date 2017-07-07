@@ -45,7 +45,7 @@ namespace EmgAlexaHandler.Intents
 
             if (!string.IsNullOrEmpty(email))
             {
-                email = email.Replace(" at ", "@");
+                email = email.Replace(" at ", "@").Replace(" dot ", ".");
             }
 
             var attr = new Dictionary<string, object>()

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Alexa.NET.Request;
 using Alexa.NET.Request.Type;
@@ -19,7 +20,7 @@ namespace EmgAlexaHandler.Intents
 
         public HandlerResult GetResponse(IntentRequest intentRequest, Session session)
         {
-            if (!session.Attributes.ContainsKey("Previous"))
+            if (session.Attributes == null || !session.Attributes.ContainsKey("Previous"))
             {
                 // DEFAULT HELP!!
             }
